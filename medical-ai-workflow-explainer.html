@@ -1,0 +1,1339 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GSK Taiwan Medical AI Workflow 的離線互動式解說：五個 Hub、共同治理層、人機決策點與 Phase 1 導入方式。">
+  <title>GSK TW Medical AI Workflow｜互動式解說</title>
+  <style>
+    :root {
+      --ink: #12202b;
+      --muted: #5e6b74;
+      --paper: #fbfaf7;
+      --surface: #ffffff;
+      --line: #dfe4e6;
+      --navy: #17324d;
+      --orange: #f06424;
+      --orange-dark: #c94b12;
+      --orange-soft: #fff0e8;
+      --teal: #147d78;
+      --teal-soft: #e5f5f2;
+      --blue: #2867a7;
+      --blue-soft: #eaf2fb;
+      --violet: #7455a6;
+      --violet-soft: #f1ecf8;
+      --green: #3b7b55;
+      --green-soft: #eaf5ee;
+      --amber: #9a6718;
+      --amber-soft: #fff6db;
+      --shadow: 0 18px 50px rgba(23, 50, 77, .10);
+      --radius: 22px;
+      --reading: 760px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 82% 2%, rgba(240, 100, 36, .10), transparent 24rem),
+        linear-gradient(180deg, #f9f7f2 0, var(--paper) 38rem, var(--paper) 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
+      line-height: 1.72;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--blue); text-underline-offset: 3px; }
+    a:hover { color: var(--orange-dark); }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible, summary:focus-visible {
+      outline: 3px solid rgba(40, 103, 167, .35);
+      outline-offset: 3px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .88em;
+    }
+
+    .progress {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 4px;
+      z-index: 100;
+      background: rgba(255,255,255,.6);
+    }
+    .progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), #ff9a45);
+      transition: width .08s linear;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 68px;
+      padding: .75rem clamp(1rem, 4vw, 3rem);
+      background: rgba(251, 250, 247, .88);
+      border-bottom: 1px solid rgba(23, 50, 77, .09);
+      backdrop-filter: blur(14px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      color: var(--navy);
+      font-weight: 760;
+      letter-spacing: -.02em;
+    }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px 10px 14px 10px;
+      color: white;
+      background: linear-gradient(145deg, var(--orange), #ff9a45);
+      box-shadow: 0 8px 18px rgba(240, 100, 36, .22);
+      font-size: .82rem;
+    }
+    .top-actions { display: flex; gap: .5rem; }
+    .ghost-button {
+      min-height: 42px;
+      padding: .58rem .85rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--navy);
+      background: rgba(255,255,255,.82);
+      font: inherit;
+      font-size: .88rem;
+      font-weight: 680;
+      cursor: pointer;
+    }
+    .ghost-button:hover { border-color: #b8c4c9; background: white; }
+
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(4rem, 9vw, 8rem) clamp(1.25rem, 5vw, 4.5rem) 4rem;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin: 0 0 1.2rem;
+      padding: .36rem .7rem;
+      border: 1px solid rgba(240, 100, 36, .22);
+      border-radius: 999px;
+      color: var(--orange-dark);
+      background: rgba(255, 240, 232, .72);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      max-width: 900px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(2.55rem, 7vw, 5.7rem);
+      line-height: 1.02;
+      letter-spacing: -.055em;
+    }
+    .hero h1 em { color: var(--orange); font-style: normal; }
+    .hero .lead {
+      max-width: 760px;
+      margin: 1.8rem 0 0;
+      color: #42525e;
+      font-size: clamp(1.08rem, 2vw, 1.32rem);
+      line-height: 1.72;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(260px, .7fr);
+      gap: 1rem;
+      margin-top: 3.2rem;
+    }
+    .hero-card {
+      padding: clamp(1.4rem, 3vw, 2.2rem);
+      border: 1px solid rgba(23,50,77,.10);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.82);
+      box-shadow: var(--shadow);
+    }
+    .hero-card.dark {
+      color: white;
+      background: linear-gradient(145deg, #17324d, #244965);
+    }
+    .hero-card .kicker {
+      margin: 0 0 .7rem;
+      color: var(--orange);
+      font-size: .78rem;
+      font-weight: 820;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .hero-card.dark .kicker { color: #ffac76; }
+    .hero-card strong {
+      display: block;
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      line-height: 1.35;
+    }
+    .hero-card p { margin: .75rem 0 0; color: var(--muted); }
+    .hero-card.dark p { color: #d9e5ee; }
+    .three-lines {
+      display: grid;
+      gap: .72rem;
+      margin-top: 1.2rem;
+    }
+    .three-lines span {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      font-weight: 690;
+    }
+    .three-lines span::before {
+      content: "";
+      flex: 0 0 9px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 5px rgba(240,100,36,.14);
+    }
+
+    .page-shell {
+      display: grid;
+      grid-template-columns: 250px minmax(0, 900px);
+      gap: clamp(2rem, 5vw, 5rem);
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1rem clamp(1.25rem, 4vw, 3.5rem) 8rem;
+    }
+    .toc {
+      position: sticky;
+      top: 92px;
+      align-self: start;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      padding: .8rem .6rem .8rem 0;
+    }
+    .toc-label {
+      margin: 0 0 .8rem .85rem;
+      color: #7b858c;
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    .toc a {
+      display: block;
+      margin: .1rem 0;
+      padding: .58rem .8rem;
+      border-left: 2px solid transparent;
+      border-radius: 0 10px 10px 0;
+      color: #66737c;
+      text-decoration: none;
+      font-size: .88rem;
+      line-height: 1.3;
+      transition: .18s ease;
+    }
+    .toc a:hover { color: var(--navy); background: rgba(23,50,77,.045); }
+    .toc a[aria-current="true"] {
+      border-left-color: var(--orange);
+      color: var(--navy);
+      background: var(--orange-soft);
+      font-weight: 760;
+    }
+
+    main { min-width: 0; }
+    .chapter {
+      position: relative;
+      padding: clamp(3.5rem, 7vw, 6.5rem) 0;
+      border-top: 1px solid var(--line);
+    }
+    .chapter:first-child { border-top: 0; }
+    .chapter-number {
+      display: inline-block;
+      margin-bottom: .85rem;
+      color: var(--orange-dark);
+      font-size: .76rem;
+      font-weight: 850;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h2 {
+      max-width: 780px;
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(2rem, 4.3vw, 3.2rem);
+      line-height: 1.13;
+      letter-spacing: -.04em;
+    }
+    h3 {
+      margin: 2.8rem 0 .8rem;
+      color: var(--navy);
+      font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+      line-height: 1.28;
+      letter-spacing: -.02em;
+    }
+    h4 { margin: 1.8rem 0 .55rem; color: var(--navy); font-size: 1.04rem; }
+    .takeaway {
+      max-width: var(--reading);
+      margin: 1.25rem 0 2.2rem;
+      color: #455560;
+      font-size: 1.1rem;
+    }
+    .copy-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: 1rem;
+      padding: .36rem .6rem;
+      border: 0;
+      border-radius: 8px;
+      color: #6c777e;
+      background: transparent;
+      font: inherit;
+      font-size: .78rem;
+      cursor: pointer;
+    }
+    .copy-link:hover { color: var(--navy); background: #eef1f2; }
+    .body-copy { max-width: var(--reading); }
+    .body-copy p { margin: 0 0 1.15rem; }
+
+    .callout {
+      max-width: var(--reading);
+      margin: 2rem 0;
+      padding: 1.2rem 1.3rem;
+      border-left: 5px solid var(--orange);
+      border-radius: 0 14px 14px 0;
+      background: var(--orange-soft);
+    }
+    .callout strong { color: var(--orange-dark); }
+    .callout p { margin: .35rem 0 0; }
+    .callout.blue { border-left-color: var(--blue); background: var(--blue-soft); }
+    .callout.blue strong { color: #1f5c99; }
+    .callout.green { border-left-color: var(--green); background: var(--green-soft); }
+    .callout.green strong { color: var(--green); }
+    .callout.amber { border-left-color: #d99527; background: var(--amber-soft); }
+    .callout.amber strong { color: var(--amber); }
+
+    .mental-model {
+      display: grid;
+      gap: 1rem;
+      margin: 2.2rem 0;
+    }
+    .layer {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 1.2rem;
+      align-items: start;
+      padding: 1.25rem 1.4rem;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+    .layer-label {
+      color: var(--navy);
+      font-weight: 820;
+    }
+    .layer p { margin: 0; color: var(--muted); }
+    .layer.control { border-color: rgba(240,100,36,.28); background: var(--orange-soft); }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(105px, 1fr));
+      gap: .7rem;
+      margin: 2.1rem 0 .7rem;
+    }
+    .loop-step {
+      position: relative;
+      min-height: 150px;
+      padding: 1rem .85rem;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 7px 22px rgba(23,50,77,.05);
+    }
+    .loop-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      top: 50%;
+      right: -.68rem;
+      z-index: 2;
+      transform: translateY(-50%);
+      color: var(--orange);
+      font-weight: 900;
+    }
+    .loop-step b {
+      display: grid;
+      place-items: center;
+      width: 27px;
+      height: 27px;
+      margin-bottom: .8rem;
+      border-radius: 50%;
+      color: white;
+      background: var(--navy);
+      font-size: .75rem;
+    }
+    .loop-step strong { display: block; color: var(--navy); font-size: .93rem; line-height: 1.3; }
+    .loop-step span { display: block; margin-top: .45rem; color: var(--muted); font-size: .76rem; line-height: 1.45; }
+    .loop-step.human { border-color: rgba(240,100,36,.34); background: var(--orange-soft); }
+    .loop-step.human b { background: var(--orange); }
+
+    .hub-map {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(135px, 1fr));
+      gap: .7rem;
+      margin: 2rem 0;
+    }
+    .hub-map a {
+      min-height: 138px;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-top: 5px solid var(--hub-color, var(--orange));
+      border-radius: 14px;
+      color: var(--ink);
+      background: white;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .hub-map a:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(23,50,77,.08); }
+    .hub-map small { display: block; color: var(--muted); font-size: .72rem; }
+    .hub-map strong { display: block; margin: .45rem 0; color: var(--navy); line-height: 1.3; }
+    .hub-map span { color: var(--muted); font-size: .75rem; line-height: 1.4; }
+
+    .hub-header {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 1.1rem;
+      align-items: center;
+      margin: 2.4rem 0 1.5rem;
+    }
+    .hub-icon {
+      display: grid;
+      place-items: center;
+      width: 68px;
+      height: 68px;
+      border-radius: 19px;
+      color: white;
+      background: var(--hub-color, var(--orange));
+      font-size: 1.4rem;
+      font-weight: 850;
+      box-shadow: 0 10px 25px color-mix(in srgb, var(--hub-color, var(--orange)) 25%, transparent);
+    }
+    .hub-header h3 { margin: 0; }
+    .hub-header p { margin: .25rem 0 0; color: var(--muted); }
+
+    .skill-chain {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(125px, 1fr));
+      gap: .55rem;
+      margin: 1.5rem 0;
+    }
+    .skill {
+      position: relative;
+      padding: .9rem .8rem;
+      border-radius: 13px;
+      background: color-mix(in srgb, var(--hub-color, var(--orange)) 10%, white);
+      border: 1px solid color-mix(in srgb, var(--hub-color, var(--orange)) 24%, white);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .74rem;
+      font-weight: 700;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+    .skill:not(:last-child)::after {
+      content: "›";
+      position: absolute;
+      top: 50%;
+      right: -.43rem;
+      z-index: 2;
+      transform: translateY(-54%);
+      color: var(--hub-color, var(--orange));
+      font-family: system-ui, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+    }
+    .io-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .8rem;
+      margin: 1.5rem 0 2.2rem;
+    }
+    .io-card {
+      padding: 1.05rem;
+      border-radius: 14px;
+      background: #f3f5f5;
+    }
+    .io-card .label {
+      display: block;
+      margin-bottom: .35rem;
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .io-card p { margin: 0; font-size: .88rem; line-height: 1.55; }
+    .io-card.decision { background: var(--orange-soft); }
+
+    table {
+      width: 100%;
+      margin: 1.4rem 0 2rem;
+      border-collapse: collapse;
+      border-spacing: 0;
+      font-size: .9rem;
+    }
+    th, td {
+      padding: .85rem .9rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--navy);
+      background: #eef2f3;
+      font-size: .76rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    tr:hover td { background: rgba(255,255,255,.55); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+    .table-wrap table { margin: 0; min-width: 700px; }
+    .table-wrap th:first-child { border-radius: 13px 0 0 0; }
+
+    .journey {
+      position: relative;
+      display: grid;
+      gap: 0;
+      margin: 2rem 0;
+      padding-left: 2.4rem;
+    }
+    .journey::before {
+      content: "";
+      position: absolute;
+      top: 1.2rem;
+      bottom: 1.2rem;
+      left: .79rem;
+      width: 2px;
+      background: linear-gradient(var(--orange), var(--teal));
+    }
+    .journey-step {
+      position: relative;
+      padding: 0 0 1.6rem 1rem;
+    }
+    .journey-step::before {
+      content: attr(data-step);
+      position: absolute;
+      top: .05rem;
+      left: -2.35rem;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border: 3px solid var(--paper);
+      border-radius: 50%;
+      color: white;
+      background: var(--navy);
+      font-size: .72rem;
+      font-weight: 850;
+    }
+    .journey-step.human::before { background: var(--orange); }
+    .journey-step h4 { margin: 0 0 .28rem; }
+    .journey-step p { max-width: 690px; margin: 0; color: var(--muted); }
+    .tag {
+      display: inline-block;
+      margin-left: .45rem;
+      padding: .16rem .48rem;
+      border-radius: 999px;
+      color: #234459;
+      background: #e8eff2;
+      font-size: .67rem;
+      font-weight: 800;
+      vertical-align: .1rem;
+    }
+    .tag.human { color: #97400f; background: #ffe1cf; }
+
+    details {
+      max-width: var(--reading);
+      margin: 1rem 0;
+      padding: 0 1rem;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: white;
+    }
+    summary {
+      padding: .9rem 0;
+      color: var(--navy);
+      font-weight: 760;
+      cursor: pointer;
+    }
+    details > div { padding: 0 0 1rem; color: var(--muted); }
+    details ul { margin-top: .4rem; }
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .8rem;
+      margin: 1.8rem 0;
+      counter-reset: principles;
+    }
+    .principle {
+      position: relative;
+      min-height: 130px;
+      padding: 1.2rem 1.2rem 1.2rem 3.4rem;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      counter-increment: principles;
+    }
+    .principle::before {
+      content: counter(principles, decimal-leading-zero);
+      position: absolute;
+      top: 1.2rem;
+      left: 1rem;
+      color: var(--orange);
+      font-size: .8rem;
+      font-weight: 900;
+    }
+    .principle strong { display: block; color: var(--navy); }
+    .principle p { margin: .35rem 0 0; color: var(--muted); font-size: .86rem; }
+
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 3.6rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+    }
+    .chapter-nav a {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      max-width: 48%;
+      padding: .85rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      color: var(--navy);
+      background: rgba(255,255,255,.65);
+      text-decoration: none;
+    }
+    .chapter-nav a:last-child { text-align: right; }
+    .chapter-nav small { color: var(--muted); }
+    .chapter-nav strong { font-size: .9rem; }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .65rem;
+      margin: 1.5rem 0;
+    }
+    .status {
+      padding: .9rem;
+      border-radius: 13px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+    .status b { display: block; margin-bottom: .35rem; color: var(--navy); }
+    .status span { color: var(--muted); font-size: .78rem; line-height: 1.4; }
+    .status:last-child { color: white; background: var(--green); border-color: var(--green); }
+    .status:last-child b, .status:last-child span { color: white; }
+
+    .closing {
+      padding: clamp(2rem, 5vw, 3.5rem);
+      border-radius: 24px;
+      color: white;
+      background: linear-gradient(145deg, #17324d, #264f69);
+      box-shadow: var(--shadow);
+    }
+    .closing h3 { margin-top: 0; color: white; }
+    .closing p { max-width: 700px; color: #d9e5ee; }
+    .closing .decision-line {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .7rem;
+      margin-top: 1.4rem;
+    }
+    .closing .decision-line div {
+      padding: .9rem;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+    }
+    .closing .decision-line b { display: block; color: #ffad78; }
+    .closing .decision-line span { font-size: .78rem; color: #d9e5ee; }
+
+    .back-to-top {
+      position: fixed;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgba(23,50,77,.15);
+      border-radius: 50%;
+      color: white;
+      background: var(--navy);
+      box-shadow: 0 10px 25px rgba(23,50,77,.2);
+      text-decoration: none;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: .2s ease;
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; transform: none; }
+
+    footer {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 2rem clamp(1.25rem, 4vw, 3.5rem) 3rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: .8rem;
+    }
+
+    .mobile-toc { display: none; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .page-shell { grid-template-columns: 1fr; }
+      .toc { display: none; }
+      .mobile-toc {
+        display: block;
+        position: sticky;
+        top: 68px;
+        z-index: 40;
+        padding: .65rem 1rem;
+        background: rgba(251,250,247,.96);
+        border-bottom: 1px solid var(--line);
+      }
+      .mobile-toc select {
+        width: 100%;
+        min-height: 44px;
+        padding: .55rem .7rem;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: var(--navy);
+        background: white;
+        font: inherit;
+      }
+      .loop { grid-template-columns: repeat(3, 1fr); }
+      .loop-step:not(:last-child)::after { display: none; }
+      .hub-map { grid-template-columns: repeat(3, 1fr); }
+      .skill-chain { grid-template-columns: repeat(3, 1fr); }
+      .skill::after { display: none; }
+    }
+
+    @media (max-width: 680px) {
+      .topbar { padding: .7rem 1rem; }
+      .brand span:last-child { display: none; }
+      .hero { padding-top: 3.5rem; }
+      .hero h1 { font-size: clamp(2.45rem, 15vw, 4rem); }
+      .page-shell { padding-inline: 1rem; }
+      .chapter { padding: 3.4rem 0; }
+      .loop { grid-template-columns: repeat(2, 1fr); }
+      .hub-map { grid-template-columns: repeat(2, 1fr); }
+      .hub-map a:last-child { grid-column: 1 / -1; }
+      .skill-chain { grid-template-columns: 1fr; }
+      .io-grid, .principles, .status-grid { grid-template-columns: 1fr; }
+      .layer { grid-template-columns: 1fr; gap: .35rem; }
+      .closing .decision-line { grid-template-columns: 1fr; }
+      .chapter-nav { flex-direction: column; }
+      .chapter-nav a { max-width: 100%; }
+      .chapter-nav a:last-child { text-align: left; }
+      .top-actions .ghost-button:first-child { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+
+    @media print {
+      :root { --paper: white; }
+      body { background: white; font-size: 10.5pt; }
+      .progress, .topbar, .toc, .mobile-toc, .copy-link, .back-to-top, .chapter-nav { display: none !important; }
+      .hero { padding: 2cm 1cm 1cm; }
+      .hero h1 { font-size: 35pt; }
+      .hero-grid { grid-template-columns: 1fr 1fr; }
+      .page-shell { display: block; max-width: none; padding: 0 1cm; }
+      .chapter { break-before: page; padding: 1.5cm 0; }
+      .chapter:first-child { break-before: auto; }
+      .hero-card, .loop-step, .hub-map a, .skill, .io-card, .principle, .closing { break-inside: avoid; box-shadow: none; }
+      .loop, .hub-map, .skill-chain { gap: .25cm; }
+      details > div { display: block; }
+      footer { max-width: none; padding: 1cm; }
+    }
+  </style>
+</head>
+<body id="top">
+  <style>.medai-portal-tabs{display:flex;gap:.35rem;align-items:center;overflow-x:auto;padding:.55rem clamp(1rem,4vw,3rem);border-bottom:1px solid #e2e8ec;background:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.medai-portal-tabs a{flex:0 0 auto;padding:.5rem .78rem;border:1px solid transparent;border-radius:999px;color:#5d6b78;text-decoration:none;font-size:.82rem;font-weight:730;white-space:nowrap}.medai-portal-tabs a:hover{border-color:#e2e8ec;color:#17324d;background:#f6f8fa}.medai-portal-tabs a[aria-current="page"]{border-color:#bfd0f4;color:#315bb9;background:#eef4ff}@media print{.medai-portal-tabs{display:none!important}}</style>
+  <nav class="medai-portal-tabs" aria-label="AI Medical tool pages">
+    <a href="index.html">Excellence overview</a>
+    <a aria-current="page" href="medical-ai-workflow-explainer.html">AI workflow</a>
+    <a href="Copilot_Agent_MSL_Knowledge_Copilot_Prompt_Guide.html">MSL Knowledge</a>
+    <a href="Copilot_Agent_MSL_mVOC_Writing_Assistant.html">mVOC Writing</a>
+    <a href="reference-text-extractor/reference_text_extractor_prompt_guide_global.html">Reference Extractor</a>
+  </nav>
+  <div class="progress" aria-hidden="true"><span id="reading-progress"></span></div>
+
+  <header class="topbar">
+    <div class="brand" aria-label="Medical AI Workflow">
+      <span class="brand-mark" aria-hidden="true">AI</span>
+      <span>Medical AI Workflow Explainer</span>
+    </div>
+    <div class="top-actions">
+      <button class="ghost-button" id="copy-current" type="button">複製本節連結</button>
+      <button class="ghost-button" type="button" onclick="window.print()">列印／存成 PDF</button>
+    </div>
+  </header>
+
+  <div class="mobile-toc">
+    <label class="sr-only" for="chapter-select">跳至章節</label>
+    <select id="chapter-select" aria-label="跳至章節">
+      <option value="mental-model">01｜先理解：AI workflow 是什麼</option>
+      <option value="shared-loop">02｜所有 Hub 共用的一條主線</option>
+      <option value="five-hubs">03｜五個 Hub 如何分工</option>
+      <option value="cross-functional-journey">04｜一個訊號如何走完全程</option>
+      <option value="skill-contract">05｜每個 AI skill 裡面有什麼</option>
+      <option value="phase-one">06｜Phase 1 應如何落地</option>
+      <option value="guardrails">07｜治理邊界與成功條件</option>
+      <option value="summary">08｜最後帶走的三句話</option>
+    </select>
+  </div>
+
+  <section class="hero" aria-labelledby="page-title">
+    <p class="eyebrow">Version 1.0 · Offline explanatory narrative</p>
+    <h1 id="page-title">AI workflow 不是自動化流水線，<br>而是<em>受治理的決策迴路</em>。</h1>
+    <p class="lead">這份解說把 MSL、TA Lead、Medical Content、Patient Engagement 與 Medical Governance 放回同一張圖：AI 負責整理、比較、挑戰與起草；專業人員負責情境判斷、承擔責任與正式核准。</p>
+
+    <div class="hero-grid">
+      <article class="hero-card dark">
+        <p class="kicker">Central takeaway</p>
+        <strong>五個 Hub 不是五座孤島；它們共同完成「訊號 → 洞察 → 策略 → 內容／行動 → 學習」的閉環。</strong>
+        <div class="three-lines" aria-label="核心原則">
+          <span>AI drafts</span>
+          <span>Humans decide</span>
+          <span>Governance controls the system</span>
+        </div>
+      </article>
+      <aside class="hero-card">
+        <p class="kicker">How to read</p>
+        <strong>約 12–15 分鐘</strong>
+        <p>先讀共同模型，再依職能深入。橙色節點代表必須由人作出判斷或核准。</p>
+        <p><strong style="font-size:.95rem">文件定位：</strong>工作概念解說；不是正式公司政策、SOP 或系統驗證文件。</p>
+      </aside>
+    </div>
+  </section>
+
+  <div class="page-shell">
+    <nav class="toc" aria-label="內容目錄">
+      <p class="toc-label">Contents</p>
+      <a href="#mental-model">01　AI workflow 是什麼</a>
+      <a href="#shared-loop">02　共同主線</a>
+      <a href="#five-hubs">03　五個 Hub</a>
+      <a href="#cross-functional-journey">04　跨職能案例</a>
+      <a href="#skill-contract">05　Skill Contract</a>
+      <a href="#phase-one">06　Phase 1</a>
+      <a href="#guardrails">07　治理與成功條件</a>
+      <a href="#summary">08　三句話總結</a>
+    </nav>
+
+    <main id="main-content">
+      <section class="chapter" id="mental-model" data-title="AI workflow 是什麼">
+        <span class="chapter-number">Chapter 01 · Mental model</span>
+        <h2>先理解：AI workflow 到底是什麼？</h2>
+        <button class="copy-link" type="button" data-copy="#mental-model" aria-label="複製本章連結">⌁ 複製本章連結</button>
+        <p class="takeaway">它不是把一個工作交給 AI 後直接取得答案，而是把一段專業工作拆成可控的步驟，安排 AI 與人各自在最適合的位置工作。</p>
+
+        <div class="body-copy">
+          <p>以 MSL field note 為例，真正的工作不只是「把筆記改寫得漂亮」。完整的 workflow 還包含：確認輸入是否合法、將觀察與推論分開、挑戰過度解讀、判斷是否形成 insight、決定是否值得採取 Medical action，以及留下可追溯紀錄。</p>
+          <p>因此，AI workflow 同時有三個層次：</p>
+        </div>
+
+        <div class="mental-model" role="list" aria-label="AI workflow 三層模型">
+          <article class="layer" role="listitem">
+            <div class="layer-label">工作層<br><small>Work layer</small></div>
+            <p>一系列具體 AI skills，例如整理 mVOC、拆解 publication、檢查 claim 與 reference、準備表單。這一層追求速度、一致性與完整性。</p>
+          </article>
+          <article class="layer" role="listitem">
+            <div class="layer-label">決策層<br><small>Decision layer</small></div>
+            <p>MSL、TA Lead、Content Specialist、Patient Affairs 與指定 approver 判斷內容是否真實、重要、合適並可採用。這一層承擔專業責任。</p>
+          </article>
+          <article class="layer control" role="listitem">
+            <div class="layer-label">控制層<br><small>Control layer</small></div>
+            <p>Medical Governance 定義允許的用途、資料邊界、來源、權限、audit trail、升級條件與模型變更規則。它不是流程末端，而是包住整個系統。</p>
+          </article>
+        </div>
+
+        <aside class="callout">
+          <strong>最重要的判斷：</strong>
+          <p>如果一個 skill 的輸出可以直接成為正式策略、對外內容或核准決定，那就不是 copilot，而是把責任錯誤地交給模型。</p>
+        </aside>
+
+        <div class="chapter-nav">
+          <span></span>
+          <a href="#shared-loop"><small>下一章</small><strong>所有 Hub 共用的一條主線 →</strong></a>
+        </div>
+      </section>
+
+      <section class="chapter" id="shared-loop" data-title="所有 Hub 共用的一條主線">
+        <span class="chapter-number">Chapter 02 · Shared loop</span>
+        <h2>所有 Hub 共用的一條主線</h2>
+        <button class="copy-link" type="button" data-copy="#shared-loop" aria-label="複製本章連結">⌁ 複製本章連結</button>
+        <p class="takeaway">不論輸入是 field note、publication、patient feedback 或 initiative form，底層都應走過同一套六步控制。</p>
+
+        <div class="loop" aria-label="共同 AI workflow 六步驟">
+          <div class="loop-step"><b>1</b><strong>Intake</strong><span>定義目的、使用者與預期輸出</span></div>
+          <div class="loop-step"><b>2</b><strong>Classify</strong><span>辨識資料敏感度與 use-case risk</span></div>
+          <div class="loop-step"><b>3</b><strong>Ground</strong><span>只使用允許且可追溯的來源</span></div>
+          <div class="loop-step"><b>4</b><strong>AI assist</strong><span>整理、分析、挑戰、起草或 pre-check</span></div>
+          <div class="loop-step human"><b>5</b><strong>Human gate</strong><span>專業判斷、修訂、決策或正式核准</span></div>
+          <div class="loop-step"><b>6</b><strong>Learn</strong><span>保存版本、修改、結果與品質訊號</span></div>
+        </div>
+
+        <div class="body-copy">
+          <h3>每一步在防止什麼？</h3>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>步驟</th><th>核心問題</th><th>若省略，主要風險</th></tr></thead>
+            <tbody>
+              <tr><td>Intake</td><td>這次到底要支援哪個決策？</td><td>生成漂亮但無法使用的內容</td></tr>
+              <tr><td>Classify</td><td>哪些資料可以進入哪個環境？</td><td>隱私、機密或資料用途超出授權</td></tr>
+              <tr><td>Ground</td><td>模型依據的是哪個版本與來源？</td><td>幻覺、過期內容或無法追溯的結論</td></tr>
+              <tr><td>AI assist</td><td>AI 的任務與非任務是什麼？</td><td>把分析工具誤當成 decision maker</td></tr>
+              <tr><td>Human gate</td><td>誰有權接受、拒絕或核准？</td><td>責任不清，pre-check 被誤認為 approval</td></tr>
+              <tr><td>Learn</td><td>錯誤、修改與效益如何回饋？</td><td>無法驗證品質，也無法安全改版</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <aside class="callout blue">
+          <strong>Grounding 的意思：</strong>
+          <p>AI 不應只靠模型記憶回答。它需要被限定在經允許的來源，例如核准內容、指定 publication、受控 evidence table、SOP 或去識別化 insight dataset，並把輸出連回來源。</p>
+        </aside>
+
+        <div class="chapter-nav">
+          <a href="#mental-model"><small>上一章</small><strong>← AI workflow 是什麼</strong></a>
+          <a href="#five-hubs"><small>下一章</small><strong>五個 Hub 如何分工 →</strong></a>
+        </div>
+      </section>
+
+      <section class="chapter" id="five-hubs" data-title="五個 Hub 如何分工">
+        <span class="chapter-number">Chapter 03 · Five hubs</span>
+        <h2>五個 Hub 如何分工</h2>
+        <button class="copy-link" type="button" data-copy="#five-hubs" aria-label="複製本章連結">⌁ 複製本章連結</button>
+        <p class="takeaway">MSL 與 Patient Engagement 讓外部聲音進入系統；TA Lead 決定意義與優先順序；Content 將證據變成可用敘事；Governance 確保每一步受控。</p>
+
+        <div class="hub-map" aria-label="五個 Hub 快速導覽">
+          <a href="#hub-msl" style="--hub-color:#147d78"><small>FUNCTION 1</small><strong>MSL Intelligence</strong><span>把互動轉成高品質 Medical insight</span></a>
+          <a href="#hub-ta" style="--hub-color:#2867a7"><small>FUNCTION 2</small><strong>TA Strategy</strong><span>把 insight 轉成策略選擇</span></a>
+          <a href="#hub-content" style="--hub-color:#7455a6"><small>FUNCTION 3</small><strong>Medical Content</strong><span>把 evidence 轉成可審查內容</span></a>
+          <a href="#hub-patient" style="--hub-color:#3b7b55"><small>FUNCTION 4</small><strong>Patient Engagement</strong><span>把患者需求轉成負責任的方案</span></a>
+          <a href="#hub-governance" style="--hub-color:#f06424"><small>FUNCTION 5</small><strong>Medical Governance</strong><span>控制風險、完整性與可追溯性</span></a>
+        </div>
+
+        <article id="hub-msl" style="--hub-color:#147d78">
+          <div class="hub-header">
+            <div class="hub-icon" aria-hidden="true">01</div>
+            <div><h3>MSL Intelligence Hub</h3><p>把 field interaction 轉成可供組織判斷的訊號，而不是把每一則筆記都升級成 insight。</p></div>
+          </div>
+          <div class="skill-chain" aria-label="MSL skills">
+            <div class="skill">@mvoc-write-right</div><div class="skill">@mvoc-challenger</div><div class="skill">@mvoc-insight-review</div><div class="skill">@hcp-interest-mapper</div><div class="skill">@sam-account-planner</div>
+          </div>
+          <div class="io-grid">
+            <div class="io-card"><span class="label">Input</span><p>MSL 的原始互動紀錄、允許的 account context。</p></div>
+            <div class="io-card"><span class="label">AI contribution</span><p>結構化觀察、分開事實與推論、挑戰過度解讀、整理 scientific interests。</p></div>
+            <div class="io-card decision"><span class="label">Human decision</span><p>MSL 確認紀錄正確；指定 Medical owner 判斷是否為有效 insight 與合適 follow-up。</p></div>
+          </div>
+          <div class="callout amber"><strong>邊界：</strong><p>Interest mapping 與 Next Best Action 必須維持 Medical purpose；AI 不應自行做 HCP priority、頻率分配或 commercial targeting。較安全的名稱是 <code>@scientific-engagement-planner</code>。</p></div>
+        </article>
+
+        <article id="hub-ta" style="--hub-color:#2867a7">
+          <div class="hub-header">
+            <div class="hub-icon" aria-hidden="true">02</div>
+            <div><h3>TA Strategy Hub</h3><p>把多個訊號放進證據、global direction 與 local context 中，做出「要優先處理什麼」的選擇。</p></div>
+          </div>
+          <div class="skill-chain" aria-label="TA Strategy skills">
+            <div class="skill">@insight-synthesizer</div><div class="skill">@medical-gap-mapper</div><div class="skill">@ta-priority-builder</div><div class="skill">@medical-strategy-writer</div><div class="skill">@annual-medical-plan-builder</div>
+          </div>
+          <div class="io-grid">
+            <div class="io-card"><span class="label">Input</span><p>經驗證 insights、literature、global strategy、field trends 與明確的 local constraints。</p></div>
+            <div class="io-card"><span class="label">AI contribution</span><p>聚類 themes、辨識 knowledge/evidence/execution gaps、比較方案並產生 strategy draft。</p></div>
+            <div class="io-card decision"><span class="label">Human decision</span><p>TA Lead 確認哪些訊號具有策略意義、決定優先順序、資源與不做事項。</p></div>
+          </div>
+          <div class="callout blue"><strong>必要的兩道 gate：</strong><p>在 synthesis 後驗證「這是不是重要 insight」；在 priority building 後決定「這是不是 Medical 要投入的優先事項」。AI 可以提出選項，不能代表 TA Lead 作出策略承諾。</p></div>
+        </article>
+
+        <article id="hub-content" style="--hub-color:#7455a6">
+          <div class="hub-header">
+            <div class="hub-icon" aria-hidden="true">03</div>
+            <div><h3>Medical Content Hub</h3><p>加速從 publication 到科學敘事的過程，同時保留 claim–evidence traceability。</p></div>
+          </div>
+          <div class="skill-chain" aria-label="Medical Content skills">
+            <div class="skill">@publication-dissector</div><div class="skill">@scientific-story-builder</div><div class="skill">@slide-architect</div><div class="skill">@medical-reviewer</div><div class="skill">@faq-generator</div>
+          </div>
+          <div class="io-grid">
+            <div class="io-card"><span class="label">Input</span><p>指定 publication、補充資料、受控 evidence table、local label 與內容目的。</p></div>
+            <div class="io-card"><span class="label">AI contribution</span><p>拆解研究設計、數字與限制；建立 narrative、storyboard、FAQ draft 與 claim-reference pre-check。</p></div>
+            <div class="io-card decision"><span class="label">Human decision</span><p>Content Specialist／指定 reviewer 判斷證據充分性、平衡性、語境與最終可用版本。</p></div>
+          </div>
+          <div class="callout amber"><strong>名稱要避免誤導：</strong><p><code>@medical-reviewer</code> 建議改為 <code>@medical-review-precheck</code>。AI 的結果應標示 Supported、Partially supported、Not supported 或 Human interpretation required，而不是 Approved。</p></div>
+        </article>
+
+        <article id="hub-patient" style="--hub-color:#3b7b55">
+          <div class="hub-header">
+            <div class="hub-icon" aria-hidden="true">04</div>
+            <div><h3>Patient Engagement Hub</h3><p>把患者與社群聲音轉成可回應的需要，同時保護個人、群體與參與關係。</p></div>
+          </div>
+          <div class="skill-chain" aria-label="Patient Engagement skills">
+            <div class="skill">@patient-insight-analyzer</div><div class="skill">@community-need-mapper</div><div class="skill">@patient-program-designer</div><div class="skill">@patient-engagement-review</div><div class="skill">@patient-impact-story</div>
+          </div>
+          <div class="io-grid">
+            <div class="io-card"><span class="label">Input</span><p>經允許且適當去識別化的患者 feedback、社群研究或 aggregate program data。</p></div>
+            <div class="io-card"><span class="label">AI contribution</span><p>整理 recurring needs、barriers 與語言可理解性；產生 program options 與 measurement framework。</p></div>
+            <div class="io-card decision"><span class="label">Human decision</span><p>Patient Affairs／SPOC 確認 consent、代表性、參與倫理、風險與真正的患者價值。</p></div>
+          </div>
+          <div class="callout green"><strong>Impact 不能預先宣稱：</strong><p>program 執行前只能生成 expected-impact framework 或 measurement plan。<code>@patient-impact-story</code> 必須以已驗證 outcome data 為基礎，並清楚區分實際結果與推論。</p></div>
+        </article>
+
+        <article id="hub-governance" style="--hub-color:#f06424">
+          <div class="hub-header">
+            <div class="hub-icon" aria-hidden="true">05</div>
+            <div><h3>Medical Governance Hub</h3><p>提高表單與審批準備效率，但不把正式治理判斷交給 AI。</p></div>
+          </div>
+          <div class="skill-chain" aria-label="Medical Governance skills">
+            <div class="skill">@spe-form-copilot</div><div class="skill">@business-interest-checker</div><div class="skill">@medical-risk-review</div><div class="skill">@fmv-preparer</div><div class="skill">@approval-package-builder</div>
+          </div>
+          <div class="io-grid">
+            <div class="io-card"><span class="label">Input</span><p>initiative description、目的、stakeholders、預算／價值轉移資訊與必要 supporting documents。</p></div>
+            <div class="io-card"><span class="label">AI contribution</span><p>填寫初稿、檢查 rationale 完整性、初步風險分類、條件式準備 FMV 與整理 approval package。</p></div>
+            <div class="io-card decision"><span class="label">Human decision</span><p>授權 approver 判斷 business interest、risk acceptability、FMV 與是否核准。</p></div>
+          </div>
+          <div class="callout"><strong>Governance 是控制層：</strong><p>FMV 並非每個 initiative 都適用，因此 workflow 應先做 classification，再依條件 routing。<code>@business-interest-checker</code> 更適合改名為 <code>@business-interest-rationale-precheck</code>。</p></div>
+        </article>
+
+        <div class="chapter-nav">
+          <a href="#shared-loop"><small>上一章</small><strong>← 所有 Hub 的共同主線</strong></a>
+          <a href="#cross-functional-journey"><small>下一章</small><strong>一個訊號如何走完全程 →</strong></a>
+        </div>
+      </section>
+
+      <section class="chapter" id="cross-functional-journey" data-title="一個訊號如何走完全程">
+        <span class="chapter-number">Chapter 04 · Cross-functional journey</span>
+        <h2>一個 HCP 訊號，如何走完全程？</h2>
+        <button class="copy-link" type="button" data-copy="#cross-functional-journey" aria-label="複製本章連結">⌁ 複製本章連結</button>
+        <p class="takeaway">假設多位 HCP 分別詢問某項臨床證據如何適用於特定病人族群。以下展示資料如何跨越 Hub，但責任不會跟著自動移轉。</p>
+
+        <div class="journey" aria-label="跨職能案例九步驟">
+          <div class="journey-step human" data-step="1"><h4>MSL 記錄原始互動 <span class="tag human">Human</span></h4><p>保留 HCP 問題、情境與 MSL 直接觀察；避免加入尚未驗證的結論。</p></div>
+          <div class="journey-step" data-step="2"><h4>AI 結構化 mVOC <span class="tag">AI assist</span></h4><p><code>@mvoc-write-right</code> 將 raw note 分成 observation、question、barrier、possible implication 與 evidence need。</p></div>
+          <div class="journey-step" data-step="3"><h4>AI 挑戰推論 <span class="tag">AI assist</span></h4><p><code>@mvoc-challenger</code> 問：這是單一問題還是 recurring signal？是否存在其他解釋？還需要哪些證據？</p></div>
+          <div class="journey-step human" data-step="4"><h4>MSL／Medical owner 驗證 <span class="tag human">Human gate</span></h4><p>確認記錄正確，並決定是否可以進入 insight dataset。沒有通過就回到筆記層，不被升級。</p></div>
+          <div class="journey-step" data-step="5"><h4>TA Hub 跨來源合成 <span class="tag">AI assist</span></h4><p><code>@insight-synthesizer</code> 將多個 field signals 與 literature、global direction 並列；<code>@medical-gap-mapper</code> 區分 knowledge、evidence 與 execution gap。</p></div>
+          <div class="journey-step human" data-step="6"><h4>TA Lead 決定策略意義 <span class="tag human">Human decision</span></h4><p>判斷這是否為可信且可由 Medical 回應的優先事項：教育、scientific exchange、data generation，或暫不行動。</p></div>
+          <div class="journey-step" data-step="7"><h4>Content Hub 準備證據材料 <span class="tag">AI assist</span></h4><p>拆解指定 publication，建立 claim–evidence map、scientific narrative、slide storyboard 與 anticipated Q&amp;A。</p></div>
+          <div class="journey-step human" data-step="8"><h4>專業審查與 Governance gate <span class="tag human">Human approval</span></h4><p>指定 reviewer 核對科學內容；Governance 確認用途、資料、必要審批與可追溯紀錄。AI pre-check 不等於正式 approval。</p></div>
+          <div class="journey-step" data-step="9"><h4>回到 field，再產生學習 <span class="tag">Closed loop</span></h4><p>核准內容支援後續 scientific exchange；新的 HCP reaction 回到 insight loop，幫助 TA Lead 監測是否真的改善 knowledge gap。</p></div>
+        </div>
+
+        <aside class="callout blue">
+          <strong>Patient voice 如何加入？</strong>
+          <p>若同一議題涉及患者理解、照護障礙或方案設計，Patient Engagement Hub 可以提供另一條經 consent 與 privacy control 的 evidence stream。它與 HCP insight 並列，不應被混成同一種資料。</p>
+        </aside>
+
+        <div class="body-copy">
+          <h3>這個案例真正展示的不是工具，而是交接</h3>
+          <p>每個交接點都需要清楚的 input、output、owner 與 status。最常見的失敗不是模型不夠聰明，而是「AI 整理過」被錯誤理解成「組織已驗證」，或「AI 建議」被錯誤理解成「策略已決定」。</p>
+        </div>
+
+        <div class="chapter-nav">
+          <a href="#five-hubs"><small>上一章</small><strong>← 五個 Hub 如何分工</strong></a>
+          <a href="#skill-contract"><small>下一章</small><strong>每個 AI skill 裡面有什麼 →</strong></a>
+        </div>
+      </section>
+
+      <section class="chapter" id="skill-contract" data-title="每個 AI skill 裡面有什麼">
+        <span class="chapter-number">Chapter 05 · Skill contract</span>
+        <h2>每個 AI skill 都需要一張「工作合約」</h2>
+        <button class="copy-link" type="button" data-copy="#skill-contract" aria-label="複製本章連結">⌁ 複製本章連結</button>
+        <p class="takeaway">名字與 prompt 不足以構成可部署的 skill。它必須有固定輸入、可觀察輸出、禁止事項、驗證方式與責任人。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Contract 欄位</th><th>需要回答</th><th>例：@mvoc-challenger</th></tr></thead>
+            <tbody>
+              <tr><td>Purpose</td><td>它支援哪個工作決策？</td><td>找出 field note 中的過度推論與缺失資訊</td></tr>
+              <tr><td>Allowed input</td><td>可以輸入什麼？</td><td>符合政策的去識別化／受控 field note</td></tr>
+              <tr><td>Prohibited input</td><td>絕對不能輸入什麼？</td><td>未允許的 patient-identifiable 或機密資料</td></tr>
+              <tr><td>Output schema</td><td>輸出固定包含哪些欄位？</td><td>Observation、assumption、alternative explanation、missing evidence</td></tr>
+              <tr><td>Source trace</td><td>每項結論如何回到輸入？</td><td>引用對應句段，不新增不存在的 HCP statement</td></tr>
+              <tr><td>Human owner</td><td>誰確認與決定？</td><td>提交該筆紀錄的 MSL；升級 insight 由指定 owner 決定</td></tr>
+              <tr><td>Escalation</td><td>何時必須停止？</td><td>資料不足、含敏感內容、疑似 AE/PQC 或無法區分事實與推論</td></tr>
+              <tr><td>Quality metric</td><td>如何知道它有效？</td><td>關鍵問題檢出率、false challenge、MSL 修改率與時間</td></tr>
+              <tr><td>Non-goal</td><td>它明確不做什麼？</td><td>不判定 insight priority，不產生 account targeting</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>輸出還需要明確的生命週期狀態</h3>
+        <div class="status-grid" aria-label="輸出狀態">
+          <div class="status"><b>Draft</b><span>AI 剛生成，尚未完成專業確認。</span></div>
+          <div class="status"><b>Pre-checked</b><span>通過自動檢查，但不是正式審查。</span></div>
+          <div class="status"><b>Human-reviewed</b><span>指定專業人員已檢視並修訂。</span></div>
+          <div class="status"><b>Approved</b><span>只有授權流程才能給予此狀態。</span></div>
+        </div>
+
+        <details>
+          <summary>為什麼名稱也屬於治理？</summary>
+          <div>使用者會從名稱推測權限。<code>@medical-reviewer</code>、<code>@business-interest-checker</code> 或 <code>@patient-engagement-review</code> 容易讓人誤以為 AI 已完成正式判斷。加入 <code>precheck</code>、<code>triage</code>、<code>draft</code> 或 <code>readiness</code>，可以在介面層降低誤用。</div>
+        </details>
+
+        <details>
+          <summary>什麼是可觀察的 acceptance criteria？</summary>
+          <div>不是「輸出高品質 insight」，而是「所有推論都有對應原文；未支持的推論被標示；缺失欄位被指出；同一組測試案例的關鍵問題檢出率達到預設門檻；高風險案例全部升級給人」。</div>
+        </details>
+
+        <div class="chapter-nav">
+          <a href="#cross-functional-journey"><small>上一章</small><strong>← 跨職能案例</strong></a>
+          <a href="#phase-one"><small>下一章</small><strong>Phase 1 應如何落地 →</strong></a>
+        </div>
+      </section>
+
+      <section class="chapter" id="phase-one" data-title="Phase 1 應如何落地">
+        <span class="chapter-number">Chapter 06 · Phase 1</span>
+        <h2>Phase 1：先驗證三條 journey，不是同時推出十個 prompts</h2>
+        <button class="copy-link" type="button" data-copy="#phase-one" aria-label="複製本章連結">⌁ 複製本章連結</button>
+        <p class="takeaway">真正需要驗證的是「工作結果是否改善」，而不是某一個 prompt 看起來是否聰明。建議把目前十個 skills 重組為三個可測試的端到端 pilots。</p>
+
+        <h3>Pilot A｜Field Insight Quality Loop</h3>
+        <div class="body-copy">
+          <p><code>@mvoc-write-right</code> → <code>@mvoc-challenger</code> → <code>@mvoc-insight-review</code> → <code>@insight-synthesizer</code> → <code>@medical-gap-mapper</code></p>
+        </div>
+        <div class="callout green"><strong>要證明：</strong><p>mVOC 更完整、過度推論更少、從 field signal 到 TA review 更快，而且沒有把單一 observation 錯誤升級成組織 insight。</p></div>
+
+        <h3>Pilot B｜Evidence-to-Content Pre-review</h3>
+        <div class="body-copy">
+          <p><code>@publication-dissector</code> → 建議新增 <code>@claim-reference-mapper</code> → <code>@medical-review-precheck</code></p>
+        </div>
+        <div class="callout blue"><strong>要證明：</strong><p>study design、數字與 limitation 擷取準確；claim 能回到 reference；reviewer 節省時間，同時 false reassurance 維持在可接受範圍。</p></div>
+
+        <h3>Pilot C｜Initiative Approval Readiness</h3>
+        <div class="body-copy">
+          <p><code>@spe-form-copilot</code> → <code>@business-interest-rationale-precheck</code> → <code>@medical-risk-triage</code> → <code>@approval-readiness-packager</code></p>
+        </div>
+        <div class="callout"><strong>要證明：</strong><p>首次提交完整率提高、補件與 cycle time 降低；AI 清楚指出缺失，但不自行判定 business interest、FMV 或 approval。</p></div>
+
+        <h3>Phase 1 的衡量框架</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>維度</th><th>可以觀察的指標</th><th>不應只看</th></tr></thead>
+            <tbody>
+              <tr><td>Quality</td><td>錯誤率、遺漏率、traceability、human correction rate</td><td>輸出看起來流暢</td></tr>
+              <tr><td>Safety</td><td>高風險案例升級率、敏感資料阻擋、unsupported inference</td><td>使用者沒有投訴</td></tr>
+              <tr><td>Efficiency</td><td>cycle time、review time、首次完整率</td><td>生成速度</td></tr>
+              <tr><td>Adoption</td><td>重複使用率、適當使用率、放棄原因</td><td>登入人數</td></tr>
+              <tr><td>Decision value</td><td>輸出是否真正改善下一個人類決策</td><td>生成了多少文件</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <aside class="callout amber">
+          <strong>70–80% workload coverage：</strong>
+          <p>目前應標示為假設，而不是預期成果。應先建立各職能 baseline：每類工作量、耗時、可由 AI 協助的比例、人工 review 成本與不可自動化部分，再估算 coverage。</p>
+        </aside>
+
+        <div class="chapter-nav">
+          <a href="#skill-contract"><small>上一章</small><strong>← 每個 skill 的工作合約</strong></a>
+          <a href="#guardrails"><small>下一章</small><strong>治理邊界與成功條件 →</strong></a>
+        </div>
+      </section>
+
+      <section class="chapter" id="guardrails" data-title="治理邊界與成功條件">
+        <span class="chapter-number">Chapter 07 · Guardrails</span>
+        <h2>AI 可以加速工作，但責任必須停留在人身上</h2>
+        <button class="copy-link" type="button" data-copy="#guardrails" aria-label="複製本章連結">⌁ 複製本章連結</button>
+        <p class="takeaway">治理的目標不是消除所有風險，而是讓每個 use case 的目的、資料、來源、決策權與停止條件都清楚可見。</p>
+
+        <div class="principles" aria-label="八項治理原則">
+          <article class="principle"><strong>Human accountability</strong><p>AI 起草與建議；授權人員判斷、修訂並核准。</p></article>
+          <article class="principle"><strong>Minimum necessary data</strong><p>只使用完成任務真正需要的最低限度資料。</p></article>
+          <article class="principle"><strong>Source traceability</strong><p>重要結論、claim 與數字都能回到允許來源與版本。</p></article>
+          <article class="principle"><strong>Observation ≠ insight</strong><p>明確區分觀察、推論、insight、recommendation 與 decision。</p></article>
+          <article class="principle"><strong>Pre-check ≠ approval</strong><p>AI 的 quality check 永遠不自動取得正式核准地位。</p></article>
+          <article class="principle"><strong>Risk-based escalation</strong><p>不確定、高風險、資料不足或超出範圍時停止並交給人。</p></article>
+          <article class="principle"><strong>Versioned and auditable</strong><p>保存來源、prompt／skill 版本、輸出、人類修改與 approval status。</p></article>
+          <article class="principle"><strong>Continuous validation</strong><p>模型、來源、prompt 或政策變更時重新驗證，不假設品質永遠不變。</p></article>
+        </div>
+
+        <h3>進入 Team Pilot 前的 Definition of Done</h3>
+        <div class="body-copy">
+          <ul>
+            <li>每條 pilot journey 都有 business owner、content owner 與 human approver。</li>
+            <li>每個 skill 都完成 Skill Contract、測試案例與清楚的 non-goals。</li>
+            <li>Allowed／prohibited data matrix、來源清單與 retention 規則已確定。</li>
+            <li>高風險與不確定案例具備停止、升級與 incident handling 路徑。</li>
+            <li>輸出清楚標示 Draft、Pre-checked、Human-reviewed 或 Approved。</li>
+            <li>以 synthetic 或經允許的測試資料完成 quality、safety 與 usability validation。</li>
+            <li>可保存輸入、來源、輸出、人工修改、版本與核准狀態。</li>
+            <li>效益基準與 pilot success thresholds 已預先定義。</li>
+          </ul>
+        </div>
+
+        <aside class="callout">
+          <strong>平台選擇原則：</strong>
+          <p>不要只用「Copilot = execution、Claude = reasoning」分類。應根據 use-case risk、允許的資料、source grounding、可稽核性、版本控制與實際驗證結果，決定哪個經核准環境執行哪項任務。</p>
+        </aside>
+
+        <div class="chapter-nav">
+          <a href="#phase-one"><small>上一章</small><strong>← Phase 1</strong></a>
+          <a href="#summary"><small>下一章</small><strong>最後帶走的三句話 →</strong></a>
+        </div>
+      </section>
+
+      <section class="chapter" id="summary" data-title="最後帶走的三句話">
+        <span class="chapter-number">Chapter 08 · Summary</span>
+        <h2>最後帶走的三句話</h2>
+        <button class="copy-link" type="button" data-copy="#summary" aria-label="複製本章連結">⌁ 複製本章連結</button>
+        <p class="takeaway">如果只能用三句話向團隊解釋這套架構，可以這樣說。</p>
+
+        <div class="closing">
+          <h3>AI workflow 的核心，不是「AI 幫我們做多少」，而是「它如何讓下一個專業決策更好」。</h3>
+          <p>五個 Hub 建立專業能力；共同 workflow 管理資料與交接；Medical Governance 負責整體控制。當這三者同時存在，AI 才能由好用的 prompts 變成可持續的 Medical operating model。</p>
+          <div class="decision-line">
+            <div><b>AI</b><span>整理、比較、挑戰、起草、pre-check</span></div>
+            <div><b>Humans</b><span>驗證、解讀、選擇、承擔責任、核准</span></div>
+            <div><b>Governance</b><span>定義允許範圍、控制與監測整個系統</span></div>
+          </div>
+        </div>
+
+        <h3>來源與限制</h3>
+        <div class="body-copy">
+          <p>本敘事以使用者提供的〈GSK TW Medical AI Workflow, Version 1.0〉及其五個 Hub、skills、Phase 1 建議與原則為唯一內容來源，並將其重構為教學性 operating model。沒有加入外部臨床或產品 claims。</p>
+          <p>所有對 governance、privacy、approval、FMV、SPE 或平台使用的描述均為概念性設計建議；實際部署仍需依適用的 GSK policies、local procedures 與授權角色確認。</p>
+        </div>
+
+        <div class="chapter-nav">
+          <a href="#guardrails"><small>上一章</small><strong>← 治理邊界與成功條件</strong></a>
+          <a href="#top"><small>回到開始</small><strong>↑ 回到頁首</strong></a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <a class="back-to-top" id="back-to-top" href="#top" aria-label="回到頁首">↑</a>
+
+  <footer>
+    <strong>GSK TW Medical AI Workflow Explainer · Version 1.0</strong><br>
+    Canonical offline HTML · Created 2026-08-08 · Conceptual working narrative, not an official policy or validated production system.
+  </footer>
+
+  <div class="sr-only" role="status" aria-live="polite" id="live-status"></div>
+
+  <script>
+    (() => {
+      const sections = [...document.querySelectorAll('main > section[id]')];
+      const tocLinks = [...document.querySelectorAll('.toc a')];
+      const select = document.getElementById('chapter-select');
+      const progress = document.getElementById('reading-progress');
+      const backToTop = document.getElementById('back-to-top');
+      const liveStatus = document.getElementById('live-status');
+      let currentId = sections[0]?.id || '';
+
+      const setCurrent = (id, updateSelect = true) => {
+        currentId = id;
+        tocLinks.forEach(link => {
+          const active = link.getAttribute('href') === `#${id}`;
+          if (active) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        });
+        if (updateSelect && select && [...select.options].some(o => o.value === id)) select.value = id;
+      };
+
+      const observer = new IntersectionObserver(entries => {
+        const visible = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setCurrent(visible.target.id);
+      }, { rootMargin: '-18% 0px -66% 0px', threshold: [0, .1, .25, .5] });
+      sections.forEach(section => observer.observe(section));
+
+      const updateProgress = () => {
+        const height = document.documentElement.scrollHeight - window.innerHeight;
+        const ratio = height > 0 ? Math.min(1, Math.max(0, window.scrollY / height)) : 0;
+        progress.style.width = `${ratio * 100}%`;
+        backToTop.classList.toggle('show', window.scrollY > 700);
+      };
+      document.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+
+      select?.addEventListener('change', event => {
+        const target = document.getElementById(event.target.value);
+        if (!target) return;
+        history.pushState(null, '', `#${target.id}`);
+        target.scrollIntoView();
+        target.querySelector('h2')?.setAttribute('tabindex', '-1');
+        target.querySelector('h2')?.focus({ preventScroll: true });
+      });
+
+      const copyLink = async hash => {
+        const url = `${location.href.split('#')[0]}${hash}`;
+        try {
+          await navigator.clipboard.writeText(url);
+          liveStatus.textContent = '連結已複製';
+        } catch (_) {
+          const area = document.createElement('textarea');
+          area.value = url;
+          area.style.position = 'fixed';
+          area.style.opacity = '0';
+          document.body.appendChild(area);
+          area.select();
+          document.execCommand('copy');
+          area.remove();
+          liveStatus.textContent = '連結已複製';
+        }
+      };
+
+      document.querySelectorAll('[data-copy]').forEach(button => {
+        button.addEventListener('click', () => copyLink(button.dataset.copy));
+      });
+      document.getElementById('copy-current')?.addEventListener('click', () => copyLink(`#${currentId}`));
+
+      window.addEventListener('popstate', () => {
+        const id = location.hash.slice(1);
+        if (id && document.getElementById(id)) setCurrent(id);
+      });
+
+      if (location.hash && document.getElementById(location.hash.slice(1))) {
+        setCurrent(location.hash.slice(1));
+      } else {
+        setCurrent(currentId);
+      }
+    })();
+  </script>
+</body>
+</html>
