@@ -149,6 +149,20 @@
     .edit-note.locked { color: #842015; background: var(--locked-soft); border: 1px solid #f0c3bd; }
     .edit-note.governed { color: #764205; background: var(--governed-soft); border: 1px solid #f0d39d; }
     .edit-note.custom { color: #145c32; background: var(--custom-soft); border: 1px solid #bfe1c8; }
+    .asset-domain-extension { padding: 22px; border-top: 1px solid var(--line); background: linear-gradient(180deg,#fbfcfe,#f5faf9); }
+    .asset-domain-head { max-width: 820px; margin-bottom: 16px; }
+    .asset-domain-head h3 { margin: 0 0 6px; font-size: 19px; }
+    .asset-domain-head p { margin: 0; color: var(--muted); font-size: 14px; }
+    .asset-domain-note { margin-top: 10px !important; padding: 10px 12px; border-left: 4px solid var(--governed); color: #6f4a16 !important; background: var(--governed-soft); }
+    .asset-domain-list { display: grid; gap: 12px; }
+    .asset-card { padding: 16px; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+    .asset-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+    .asset-card h4 { margin: 0; color: var(--ink); font-size: 17px; }
+    .asset-use { margin: 7px 0 13px; color: var(--muted); font-size: 13px; }
+    .asset-prompt-details { border-top: 1px solid var(--line); padding-top: 10px; }
+    .asset-prompt-details summary { width: fit-content; color: var(--accent-dark); cursor: pointer; font-size: 13px; font-weight: 800; }
+    .asset-prompt-details pre { margin-top: 10px; max-height: 30rem; }
+    .asset-copy-status { min-height: 18px; margin-top: 6px; color: var(--accent); font-size: 13px; font-weight: 700; }
     .checklist { margin: 16px 0; padding: 22px; }
     .checklist ol { margin: 0; padding-left: 22px; columns: 2; column-gap: 36px; }
     .checklist li { break-inside: avoid; margin: 0 0 9px; }
@@ -169,6 +183,7 @@
       .copy-all { align-items: stretch; flex-direction: column; }
       .copy-button { width: 100%; }
       .code-toolbar { align-items: stretch; flex-direction: column; }
+      .asset-card-head { flex-direction: column; }
       nav { grid-template-columns: 1fr; }
       .checklist ol { columns: 1; }
     }
@@ -176,22 +191,27 @@
     @media print {
       body { background: #fff; }
       .layout { display: block; }
-      aside, .copy-button, .copy-status { display: none !important; }
+      aside, .copy-button, .copy-status, .asset-copy-status { display: none !important; }
       main { max-width: none; padding: 0; }
       .hero, .legend, section, .checklist { break-inside: avoid; border-color: #bbb; box-shadow: none; }
       pre { max-height: none; overflow: visible; color: #111; background: #f3f4f6; }
+      .asset-prompt-details > * { display: block !important; }
     }
   </style>
 </head>
 <body>
-  <style>.medai-portal-tabs{display:flex;gap:.35rem;align-items:center;overflow-x:auto;padding:.55rem clamp(1rem,4vw,3rem);border-bottom:1px solid #e2e8ec;background:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.medai-portal-tabs a{flex:0 0 auto;padding:.5rem .78rem;border:1px solid transparent;border-radius:999px;color:#5d6b78;text-decoration:none;font-size:.82rem;font-weight:730;white-space:nowrap}.medai-portal-tabs a:hover{border-color:#e2e8ec;color:#17324d;background:#f6f8fa}.medai-portal-tabs a[aria-current="page"]{border-color:#bfd0f4;color:#315bb9;background:#eef4ff}@media print{.medai-portal-tabs{display:none!important}}</style>
+  <style>.medai-portal-tabs{display:flex;gap:.35rem;align-items:center;overflow-x:auto;padding:.55rem clamp(1rem,4vw,3rem);border-bottom:1px solid #e2e8ec;background:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.medai-portal-tabs a{flex:0 0 auto;padding:.5rem .78rem;border:1px solid transparent;border-radius:999px;color:#5d6b78;text-decoration:none;font-size:.82rem;font-weight:730;white-space:nowrap}.medai-portal-tabs a:hover{border-color:#e2e8ec;color:#17324d;background:#f6f8fa}.medai-portal-tabs a[aria-current="page"]{border-color:#bfd0f4;color:#315bb9;background:#eef4ff}.medai-home-return-wrap{max-width:1180px;margin:.9rem auto 0;padding:0 clamp(1rem,4vw,3rem)}.medai-home-return{display:inline-flex;align-items:center;min-height:40px;padding:.45rem .8rem;border:1px solid #e2e8ec;border-radius:999px;color:#17324d;background:#fff;text-decoration:none;font-size:.82rem;font-weight:760}.medai-home-return:hover{border-color:#bfd0f4;background:#eef4ff}@media print{.medai-portal-tabs,.medai-home-return-wrap{display:none!important}}</style>
   <nav class="medai-portal-tabs" aria-label="AI Medical tool pages">
     <a href="index.html">Excellence overview</a>
     <a href="medical-ai-workflow-explainer.html">AI workflow</a>
+    <a href="patient-affairs-workflow.html">Patient Affairs</a>
+    <a href="ta-medical-impact-okr-workflow.html">TA Impact &amp; OKR</a>
+    <a href="management-monitoring-workflow.html">Management Monitoring</a>
     <a aria-current="page" href="Copilot_Agent_MSL_Knowledge_Copilot_Prompt_Guide.html">MSL Knowledge</a>
     <a href="Copilot_Agent_MSL_mVOC_Writing_Assistant.html">mVOC Writing</a>
     <a href="reference-text-extractor/reference_text_extractor_prompt_guide_global.html">Reference Extractor</a>
   </nav>
+  <div class="medai-home-return-wrap"><a class="medai-home-return" href="index.html">← Back to home / 回到主頁</a></div>
   <div class="layout">
     <aside>
       <h2 class="brand" id="siteName">MSL Knowledge Copilot</h2>
@@ -341,6 +361,7 @@ user_context:
   product: "[IF APPLICABLE]"
   audience_or_situation: "[IF APPLICABLE]"
   requested_output: "quick answer | scientific summary | comparison | FAQ"</code></pre></div>
+        <div class="note-panel"><p class="panel-title">Section 11 extension</p><p>The interactive page also provides five canonical English asset-domain prompt starters with separate copy controls:</p><ul><li>Infectious Disease — pathogen, syndrome, resistance, diagnostics, population, and geography.</li><li>Respiratory — diagnosis, phenotype/endotype, severity/control, exacerbations, lung function, device, and comorbidity.</li><li>Specialty — named disease, pathway, organ involvement, biomarker, patient segment, and treatment setting.</li><li>Oncology — tumor, histology, stage, biomarker, line, regimen, endpoint, follow-up, and study design.</li><li>Vaccine — pathogen, age/risk group, schedule, prior vaccination, jurisdiction, and recommendation version.</li></ul><p>Confirm the routing category and fill every placeholder using approved knowledge before deployment.</p></div>
       </section>
     </main>
   </noscript>
@@ -445,6 +466,205 @@ user_context:
       th:{productionTitle:"พรอมต์สำหรับใช้งานจริง",productionBody:"แนะนำสำหรับการใช้งาน คัดลอกแกนกลางมาตรฐานภาษาอังกฤษแบบกระชับ",productionButton:"คัดลอกพรอมต์ใช้งานจริง",productionCopied:"คัดลอกพรอมต์ใช้งานจริงแล้ว",copyAllTitle:"ข้อกำหนดธรรมาภิบาลฉบับเต็ม",copyAllBody:"สำหรับอ้างอิงเท่านั้น คัดลอกทั้ง 12 บล็อกในภาษาที่เลือก",copyAll:"คัดลอกข้อกำหนดฉบับเต็ม",copiedAll:"คัดลอกข้อกำหนดฉบับเต็มแล้ว",referenceNotice:"12 บล็อกด้านล่างใช้อธิบายโครงสร้างทั้งหมด ไม่ควรวางทุกบล็อกลงใน agent เป็นค่าเริ่มต้น"}
     };
     locales.forEach(locale => Object.assign(ui[locale], copyLabels[locale]));
+
+    const assetUI = {
+      en:{title:"Recommended GSK asset-domain prompt starters",intro:"Choose the closest domain, then replace placeholders with approved asset knowledge. Each prompt keeps the core behavior unchanged and adds the scientific context needed for reliable retrieval.",note:"Proposed routing categories—not an approved portfolio taxonomy. Confirm classification, sources, scope, and terminology with the accountable knowledge owner before deployment.",use:"Recommended use",prompt:"Canonical English prompt",view:"View prompt",copy:"Copy this prompt",copied:"Prompt copied."},
+      "zh-Hant":{title:"建議的 GSK asset-domain prompt starters",intro:"選擇最接近的領域，再以已核准的asset knowledge替換placeholder。每個prompt都保留核心行為，只補上可靠檢索所需的科學情境。",note:"這是建議的routing categories，不代表已核准的portfolio taxonomy。部署前請由accountable knowledge owner確認分類、來源、範圍與術語。",use:"建議使用情境",prompt:"標準英文 Prompt",view:"查看 Prompt",copy:"複製此 Prompt",copied:"已複製 Prompt。"},
+      ja:{title:"推奨 GSK アセット領域プロンプト",intro:"最も近い領域を選び、承認済みアセット知識でプレースホルダーを置き換えます。コア動作を変えず、検索に必要な科学的文脈を追加します。",note:"提案するルーティング分類であり、承認済みポートフォリオ分類ではありません。導入前に責任ある知識オーナーが分類、情報源、範囲、用語を確認してください。",use:"推奨用途",prompt:"標準英語プロンプト",view:"プロンプトを表示",copy:"このプロンプトをコピー",copied:"プロンプトをコピーしました。"},
+      ko:{title:"권장 GSK 자산 영역 프롬프트",intro:"가장 가까운 영역을 선택한 뒤 승인된 자산 지식으로 자리표시자를 교체합니다. 코어 행동은 유지하고 신뢰할 수 있는 검색에 필요한 과학적 맥락을 추가합니다.",note:"제안된 라우팅 분류이며 승인된 포트폴리오 분류가 아닙니다. 배포 전에 책임 있는 지식 소유자가 분류, 출처, 범위, 용어를 확인해야 합니다.",use:"권장 사용",prompt:"표준 영어 프롬프트",view:"프롬프트 보기",copy:"이 프롬프트 복사",copied:"프롬프트를 복사했습니다."},
+      es:{title:"Prompts recomendados por dominio de activos de GSK",intro:"Elija el dominio más cercano y sustituya los marcadores con conocimiento aprobado del activo. Cada prompt conserva el núcleo y añade el contexto científico necesario para la recuperación.",note:"Son categorías de enrutamiento propuestas, no una taxonomía de cartera aprobada. El responsable del conocimiento debe confirmar clasificación, fuentes, alcance y terminología antes del despliegue.",use:"Uso recomendado",prompt:"Prompt canónico en inglés",view:"Ver prompt",copy:"Copiar este prompt",copied:"Prompt copiado."},
+      it:{title:"Prompt consigliati per dominio degli asset GSK",intro:"Scegliere il dominio più vicino e sostituire i segnaposto con conoscenza approvata dell'asset. Ogni prompt mantiene il nucleo e aggiunge il contesto scientifico necessario al recupero.",note:"Categorie di instradamento proposte, non una tassonomia di portafoglio approvata. Il knowledge owner deve confermare classificazione, fonti, ambito e terminologia prima del rilascio.",use:"Uso consigliato",prompt:"Prompt canonico in inglese",view:"Mostra prompt",copy:"Copia questo prompt",copied:"Prompt copiato."},
+      de:{title:"Empfohlene Prompts nach GSK-Assetbereich",intro:"Den passendsten Bereich wählen und Platzhalter mit freigegebenem Asset-Wissen ersetzen. Jeder Prompt belässt das Kernverhalten und ergänzt den nötigen wissenschaftlichen Kontext.",note:"Vorgeschlagene Routing-Kategorien, keine freigegebene Portfolio-Taxonomie. Klassifikation, Quellen, Umfang und Terminologie müssen vor Einführung durch den verantwortlichen Knowledge Owner bestätigt werden.",use:"Empfohlene Verwendung",prompt:"Kanonischer englischer Prompt",view:"Prompt anzeigen",copy:"Diesen Prompt kopieren",copied:"Prompt kopiert."},
+      th:{title:"พรอมต์แนะนำตามกลุ่มสินทรัพย์ของ GSK",intro:"เลือกกลุ่มที่ใกล้ที่สุดแล้วแทนที่ช่องว่างด้วยความรู้เกี่ยวกับสินทรัพย์ที่อนุมัติ พรอมต์แต่ละรายการคงพฤติกรรมหลักและเพิ่มบริบททางวิทยาศาสตร์ที่จำเป็น",note:"เป็นหมวดหมู่สำหรับการส่งต่อที่เสนอ ไม่ใช่อนุกรมวิธานพอร์ตโฟลิโอที่อนุมัติ เจ้าของความรู้ต้องยืนยันการจัดประเภท แหล่งข้อมูล ขอบเขต และคำศัพท์ก่อนใช้งาน",use:"การใช้งานที่แนะนำ",prompt:"พรอมต์ภาษาอังกฤษมาตรฐาน",view:"ดูพรอมต์",copy:"คัดลอกพรอมต์นี้",copied:"คัดลอกพรอมต์แล้ว"}
+    };
+
+    const assetDomainPrompts = [
+      {
+        id:"infectious-disease",
+        title:{en:"Infectious Disease", "zh-Hant":"Infectious Disease｜感染性疾病", ja:"Infectious Disease｜感染症", ko:"Infectious Disease｜감염질환", es:"Infectious Disease｜Enfermedades infecciosas", it:"Infectious Disease｜Malattie infettive", de:"Infectious Disease｜Infektionskrankheiten", th:"Infectious Disease｜โรคติดเชื้อ"},
+        use:{en:"Use when pathogen, syndrome, resistance, diagnostic method, treatment or prevention setting, population, and geography can materially change the answer.","zh-Hant":"適用於病原體、臨床症候群、抗藥性、診斷方式、治療或預防情境、族群及地區可能實質改變答案時。",ja:"病原体、症候群、耐性、診断法、治療・予防場面、集団、地域が回答を左右する場合に使用します。",ko:"병원체, 증후군, 내성, 진단 방법, 치료·예방 환경, 대상군 및 지역이 답변을 바꿀 수 있을 때 사용합니다.",es:"Úselo cuando patógeno, síndrome, resistencia, diagnóstico, contexto de tratamiento o prevención, población y geografía puedan cambiar la respuesta.",it:"Usare quando patogeno, sindrome, resistenza, diagnostica, contesto di trattamento o prevenzione, popolazione e area geografica possono cambiare la risposta.",de:"Verwenden, wenn Erreger, Syndrom, Resistenz, Diagnostik, Behandlungs- oder Präventionssetting, Population und Region die Antwort verändern können.",th:"ใช้เมื่อเชื้อก่อโรค กลุ่มอาการ การดื้อยา วิธีวินิจฉัย บริบทการรักษาหรือป้องกัน ประชากร และภูมิภาคอาจเปลี่ยนคำตอบ"},
+        prompt:`ASSET-DOMAIN KNOWLEDGE REQUEST — INFECTIOUS DISEASE
+
+Use the MSL Knowledge Copilot core instructions and approved internal sources only.
+
+QUESTION
+- MSL question: [QUESTION]
+- Intended use: [INTERNAL LEARNING | FIELD PREPARATION]
+- Region and timeframe: [REGION] | [TIMEFRAME]
+- Asset or product: [ASSET / PRODUCT / NONE]
+
+REQUIRED SCIENTIFIC CONTEXT
+- Pathogen or infectious syndrome: [INPUT]
+- Treatment, prevention, or diagnostic setting: [INPUT]
+- Population and immune status: [INPUT]
+- Disease severity or stage: [INPUT]
+- Resistance, susceptibility, or epidemiology context: [INPUT OR UNKNOWN]
+- Comparator or current practice: [INPUT OR NONE]
+
+INSTRUCTIONS
+1. Confirm the scope before answering. Ask up to three focused questions if missing context could materially change the answer.
+2. Retrieve only from the approved Infectious Disease TA module and the configured source hierarchy. Never infer an asset claim from mechanism alone.
+3. Separate pathogen biology, disease burden, diagnostic evidence, clinical evidence, resistance or epidemiology context, and approved asset information.
+4. State the applicable organism, syndrome, population, geography, regimen or schedule, endpoint, timeframe, and evidence limitations for every material conclusion.
+5. Do not generalize across pathogens, resistance patterns, populations, regions, formulations, doses, regimens, treatment settings, or prevention settings.
+6. Identify conflicting, outdated, missing, or non-applicable sources. Route adverse event, product complaint, personal data, or off-label situations through the configured local procedure.
+
+OUTPUT
+1. Direct answer
+2. Context that changes interpretation
+3. Evidence table: conclusion | population/setting | source ID | version/date | status | limitation
+4. What remains unknown or requires Medical Information
+5. Field-preparation questions the MSL may consider; do not create promotional claims.`
+      },
+      {
+        id:"respiratory",
+        title:{en:"Respiratory", "zh-Hant":"Respiratory｜呼吸領域", ja:"Respiratory｜呼吸器", ko:"Respiratory｜호흡기", es:"Respiratory｜Respiratorio", it:"Respiratory｜Respiratorio", de:"Respiratory｜Atemwegserkrankungen", th:"Respiratory｜ระบบทางเดินหายใจ"},
+        use:{en:"Use for respiratory asset questions where diagnosis, phenotype or endotype, severity versus control, exacerbations, lung function, device, and comorbidities matter.","zh-Hant":"適用於診斷、phenotype或endotype、severity與control區別、惡化、肺功能、裝置及共病會影響答案的呼吸領域問題。",ja:"診断、表現型・エンドタイプ、重症度とコントロール、増悪、肺機能、デバイス、併存症が重要な場合に使用します。",ko:"진단, 표현형·내재형, 중증도와 조절, 악화, 폐기능, 기기 및 동반질환이 중요한 호흡기 자산 질문에 사용합니다.",es:"Úselo cuando importen diagnóstico, fenotipo o endotipo, gravedad frente a control, exacerbaciones, función pulmonar, dispositivo y comorbilidades.",it:"Usare quando sono rilevanti diagnosi, fenotipo o endotipo, gravità rispetto al controllo, riacutizzazioni, funzione polmonare, dispositivo e comorbilità.",de:"Verwenden, wenn Diagnose, Phäno- oder Endotyp, Schweregrad versus Kontrolle, Exazerbationen, Lungenfunktion, Gerät und Komorbiditäten relevant sind.",th:"ใช้เมื่อการวินิจฉัย phenotype หรือ endotype ความรุนแรงเทียบกับการควบคุม การกำเริบ สมรรถภาพปอด อุปกรณ์ และโรคร่วมมีความสำคัญ"},
+        prompt:`ASSET-DOMAIN KNOWLEDGE REQUEST — RESPIRATORY
+
+Use the MSL Knowledge Copilot core instructions and approved internal sources only.
+
+QUESTION
+- MSL question: [QUESTION]
+- Intended use: [INTERNAL LEARNING | FIELD PREPARATION]
+- Region and timeframe: [REGION] | [TIMEFRAME]
+- Asset or product: [ASSET / PRODUCT / NONE]
+
+REQUIRED SCIENTIFIC CONTEXT
+- Disease and diagnostic basis: [INPUT]
+- Population, age group, and care setting: [INPUT]
+- Phenotype, endotype, or biomarker: [INPUT OR UNKNOWN]
+- Severity, control status, and exacerbation history: [INPUT OR UNKNOWN]
+- Lung-function context and comorbidities: [INPUT OR UNKNOWN]
+- Treatment class, device, dose, and comparator: [INPUT OR NONE]
+
+INSTRUCTIONS
+1. Confirm whether the question concerns diagnosis, disease biology, treatment evidence, device use, guideline positioning, or approved asset information.
+2. Retrieve only from the approved Respiratory TA module and configured source hierarchy. Keep current approved content distinct from external guideline or reference material.
+3. Distinguish diagnosis, severity, symptom control, exacerbation risk, lung-function outcomes, patient-reported outcomes, and biomarker-defined subgroups.
+4. Report the study population, inclusion criteria, disease state, background therapy, device, dose, comparator, endpoint definition, timeframe, and limitations.
+5. Do not extrapolate across asthma, COPD, other respiratory diseases, severity groups, phenotypes, biomarkers, devices, doses, formulations, age groups, or study designs.
+6. Do not make unsupported cross-trial comparisons. Flag missing or conflicting evidence and route safety, product quality, personal data, or off-label situations appropriately.
+
+OUTPUT
+1. Direct answer
+2. Patient and disease context needed for interpretation
+3. Evidence table: conclusion | disease/population | endpoint/timeframe | source ID | status | limitation
+4. Approved asset information versus broader scientific context
+5. Uncertainties, evidence gaps, and questions for Medical Information.`
+      },
+      {
+        id:"specialty",
+        title:{en:"Specialty", "zh-Hant":"Specialty｜特殊專科", ja:"Specialty｜スペシャリティ", ko:"Specialty｜스페셜티", es:"Specialty｜Especialidades", it:"Specialty｜Specialty care", de:"Specialty｜Spezialtherapie", th:"Specialty｜การรักษาเฉพาะทาง"},
+        use:{en:"Use for specialty assets only after naming the disease, pathway, organ involvement, biomarker, patient segment, and treatment setting; “Specialty” alone is not a scientific scope.","zh-Hant":"必須先確認疾病、pathway、器官受累、biomarker、患者分群與治療情境；只有「Specialty」並不足以構成科學範圍。",ja:"疾患、経路、臓器病変、バイオマーカー、患者セグメント、治療場面を特定してから使用します。「Specialty」だけでは科学的範囲になりません。",ko:"질환, 경로, 장기 침범, 바이오마커, 환자군 및 치료 환경을 명시한 뒤 사용합니다. ‘Specialty’만으로는 과학적 범위가 아닙니다.",es:"Úselo solo tras especificar enfermedad, vía, órgano afectado, biomarcador, segmento de pacientes y contexto terapéutico; “Specialty” por sí solo no define el alcance científico.",it:"Usare solo dopo aver definito malattia, pathway, coinvolgimento d'organo, biomarcatore, segmento di pazienti e setting terapeutico; “Specialty” da solo non è un ambito scientifico.",de:"Erst nach Angabe von Erkrankung, Signalweg, Organbeteiligung, Biomarker, Patientensegment und Behandlungssetting verwenden; „Specialty“ allein ist kein wissenschaftlicher Umfang.",th:"ใช้หลังจากระบุโรค pathway อวัยวะที่เกี่ยวข้อง biomarker กลุ่มผู้ป่วย และบริบทการรักษาแล้วเท่านั้น คำว่า Specialty เพียงอย่างเดียวไม่ใช่ขอบเขตทางวิทยาศาสตร์"},
+        prompt:`ASSET-DOMAIN KNOWLEDGE REQUEST — SPECIALTY
+
+Use the MSL Knowledge Copilot core instructions and approved internal sources only.
+
+QUESTION
+- MSL question: [QUESTION]
+- Intended use: [INTERNAL LEARNING | FIELD PREPARATION]
+- Region and timeframe: [REGION] | [TIMEFRAME]
+- Asset or product: [ASSET / PRODUCT / NONE]
+
+REQUIRED SCIENTIFIC CONTEXT
+- Disease and organ involvement: [INPUT]
+- Biological pathway or target: [INPUT OR UNKNOWN]
+- Population, disease subtype, and patient segment: [INPUT]
+- Biomarker or diagnostic criteria: [INPUT OR NONE]
+- Disease activity, severity, stage, or prior treatment: [INPUT OR UNKNOWN]
+- Treatment setting and comparator: [INPUT OR NONE]
+
+INSTRUCTIONS
+1. Do not answer from the label “Specialty” alone. Confirm the disease, asset, patient segment, and intended scientific question first.
+2. Retrieve only from the approved disease- and asset-specific Specialty TA module and configured source hierarchy.
+3. Separate disease biology, target or pathway rationale, diagnostic or biomarker evidence, clinical evidence, approved asset information, and remaining hypotheses.
+4. State population, organ involvement, disease subtype, prior treatment, endpoint, timeframe, evidence status, and limitations for each material conclusion.
+5. Do not extrapolate across diseases, organ manifestations, biomarkers, mechanisms, patient segments, doses, regimens, stages, or evidence generated for another asset.
+6. Treat mechanistic plausibility as a hypothesis unless supported by applicable evidence. Flag missing, conflicting, outdated, or unapproved knowledge.
+
+OUTPUT
+1. Direct answer
+2. Disease and patient-segment definition
+3. Evidence map: biology | diagnostic/biomarker | clinical | approved asset information
+4. Applicability and do-not-extrapolate boundaries
+5. Evidence gaps, review status, and escalation needs.`
+      },
+      {
+        id:"oncology",
+        title:{en:"Oncology", "zh-Hant":"Oncology｜腫瘤領域", ja:"Oncology｜オンコロジー", ko:"Oncology｜종양학", es:"Oncology｜Oncología", it:"Oncology｜Oncologia", de:"Oncology｜Onkologie", th:"Oncology｜มะเร็งวิทยา"},
+        use:{en:"Use when tumor type, histology, stage, biomarker, treatment line, prior therapy, regimen, endpoint, follow-up, and study design are essential to interpretation.","zh-Hant":"適用於tumor type、histology、stage、biomarker、治療線別、既往治療、regimen、endpoint、follow-up及study design不可省略時。",ja:"腫瘍型、組織型、病期、バイオマーカー、治療ライン、既治療、レジメン、評価項目、追跡期間、試験デザインが重要な場合に使用します。",ko:"종양 유형, 조직학, 병기, 바이오마커, 치료 차수, 이전 치료, 요법, 평가변수, 추적기간 및 연구설계가 해석에 필수일 때 사용합니다.",es:"Úselo cuando tipo tumoral, histología, estadio, biomarcador, línea, tratamiento previo, régimen, endpoint, seguimiento y diseño sean esenciales.",it:"Usare quando tipo di tumore, istologia, stadio, biomarcatore, linea, terapie precedenti, regime, endpoint, follow-up e disegno sono essenziali.",de:"Verwenden, wenn Tumorart, Histologie, Stadium, Biomarker, Therapielinie, Vorbehandlung, Regime, Endpunkt, Follow-up und Studiendesign entscheidend sind.",th:"ใช้เมื่อชนิดเนื้องอก พยาธิสภาพ ระยะ biomarker ลำดับการรักษา การรักษาก่อนหน้า regimen endpoint การติดตาม และรูปแบบการศึกษาจำเป็นต่อการตีความ"},
+        prompt:`ASSET-DOMAIN KNOWLEDGE REQUEST — ONCOLOGY
+
+Use the MSL Knowledge Copilot core instructions and approved internal sources only.
+
+QUESTION
+- MSL question: [QUESTION]
+- Intended use: [INTERNAL LEARNING | FIELD PREPARATION]
+- Region and timeframe: [REGION] | [TIMEFRAME]
+- Asset or product: [ASSET / PRODUCT / NONE]
+
+REQUIRED SCIENTIFIC CONTEXT
+- Tumor type and histology: [INPUT]
+- Stage, disease setting, and treatment intent: [INPUT]
+- Biomarker definition and testing method: [INPUT OR NONE]
+- Line of therapy and prior treatments: [INPUT]
+- Regimen, dose, schedule, and comparator: [INPUT OR NONE]
+- Endpoint, analysis population, and follow-up: [INPUT OR UNKNOWN]
+
+INSTRUCTIONS
+1. Confirm the exact tumor, histology, stage, biomarker, line, regimen, and intended question before retrieving evidence.
+2. Retrieve only from the approved Oncology TA module and configured source hierarchy. Distinguish approved asset information from investigational evidence.
+3. State study design, phase, population, biomarker criteria, analysis set, treatment arms, endpoint definition, assessment method, follow-up, maturity, and material limitations.
+4. Distinguish response, duration, progression, survival, safety, quality-of-life, subgroup, and exploratory outcomes. Do not imply that one endpoint proves another.
+5. Do not make unsupported cross-trial comparisons or extrapolate across tumor types, histologies, stages, biomarkers, lines, regimens, doses, schedules, analysis populations, or follow-up periods.
+6. Label exploratory, post hoc, immature, indirect, or hypothesis-generating evidence clearly. Route safety, product complaint, personal data, and off-label questions through approved procedures.
+
+OUTPUT
+1. Direct answer
+2. Patient, tumor, biomarker, line, and regimen context
+3. Evidence table: study/design | population | endpoint | result context | follow-up | source/status | limitation
+4. Approved versus investigational information
+5. Uncertainties, non-comparable evidence, and Medical Information escalation.`
+      },
+      {
+        id:"vaccine",
+        title:{en:"Vaccine", "zh-Hant":"Vaccine｜疫苗領域", ja:"Vaccine｜ワクチン", ko:"Vaccine｜백신", es:"Vaccine｜Vacunas", it:"Vaccine｜Vaccini", de:"Vaccine｜Impfstoffe", th:"Vaccine｜วัคซีน"},
+        use:{en:"Use when pathogen, vaccine or platform, age or risk group, dose schedule, previous vaccination, jurisdiction, recommendation version, and administration context can change the answer.","zh-Hant":"適用於病原體、疫苗或平台、年齡或風險族群、劑次時程、既往接種、地區、建議版本及施打情境會改變答案時。",ja:"病原体、ワクチン・プラットフォーム、年齢・リスク群、接種スケジュール、既往接種、地域、推奨版、接種状況が回答を左右する場合に使用します。",ko:"병원체, 백신·플랫폼, 연령·위험군, 접종 일정, 이전 접종, 관할지역, 권고 버전 및 투여 상황이 답변을 바꿀 수 있을 때 사용합니다.",es:"Úselo cuando patógeno, vacuna o plataforma, edad o riesgo, pauta, vacunación previa, jurisdicción, versión de recomendaciones y contexto de administración puedan cambiar la respuesta.",it:"Usare quando patogeno, vaccino o piattaforma, età o rischio, schema, vaccinazioni precedenti, giurisdizione, versione delle raccomandazioni e contesto di somministrazione possono cambiare la risposta.",de:"Verwenden, wenn Erreger, Impfstoff oder Plattform, Alters- oder Risikogruppe, Dosisschema, frühere Impfung, Zuständigkeit, Empfehlungsversion und Anwendungskontext die Antwort verändern können.",th:"ใช้เมื่อเชื้อก่อโรค วัคซีนหรือแพลตฟอร์ม อายุหรือกลุ่มเสี่ยง ตารางขนาดยา การฉีดก่อนหน้า เขตอำนาจ เวอร์ชันคำแนะนำ และบริบทการให้วัคซีนอาจเปลี่ยนคำตอบ"},
+        prompt:`ASSET-DOMAIN KNOWLEDGE REQUEST — VACCINE
+
+Use the MSL Knowledge Copilot core instructions and approved internal sources only.
+
+QUESTION
+- MSL question: [QUESTION]
+- Intended use: [INTERNAL LEARNING | FIELD PREPARATION]
+- Jurisdiction and date: [COUNTRY / REGION] | [YYYY-MM-DD]
+- Vaccine, platform, or asset: [INPUT / NONE]
+
+REQUIRED SCIENTIFIC CONTEXT
+- Pathogen and disease outcome of interest: [INPUT]
+- Age group and risk group: [INPUT]
+- Vaccination history and prior product: [INPUT OR UNKNOWN]
+- Dose number, interval, and schedule context: [INPUT OR UNKNOWN]
+- Administration, coadministration, or special-population question: [INPUT OR NONE]
+- Applicable label or recommendation version: [INPUT OR UNKNOWN]
+
+INSTRUCTIONS
+1. Confirm jurisdiction, date, age or risk group, vaccination history, dose number, schedule, and intended question before answering.
+2. Retrieve only from the approved Vaccine TA module, current locally applicable product information, approved Medical content, and configured source hierarchy.
+3. Keep regulatory indication, public-health recommendation, clinical evidence, immunogenicity, effectiveness, safety, administration, and operational guidance distinct.
+4. State population, vaccine or platform, dose schedule, comparator, outcome definition, timeframe, jurisdiction, document version, and limitations.
+5. Do not assume interchangeability, indication, schedule, coadministration, contraindication, precaution, effectiveness, or applicability across products, platforms, age groups, risk groups, jurisdictions, variants, seasons, or recommendation versions.
+6. If label and public-health guidance differ in scope or timing, present both accurately and escalate interpretation. Route adverse event, product complaint, cold-chain or quality concern, personal data, and off-label questions through approved local procedures.
+
+OUTPUT
+1. Direct answer with jurisdiction and date
+2. Applicable population, vaccination history, and schedule
+3. Source table: document | authority/status | version/date | applicable scope | limitation
+4. Regulatory information versus recommendation versus scientific evidence
+5. Unknowns, version conflicts, and required escalation.`
+      }
+    ];
 
     const sections = [
       {
@@ -1375,6 +1595,25 @@ user_context:
     function statusClass(value) { return value === "locked" ? "locked" : value === "governed" ? "governed" : "custom"; }
     function statusText(t, value) { return value === "locked" ? t.locked : value === "governed" ? t.governed : t.custom; }
     function editText(t, value) { return value === "locked" ? t.editLocked : value === "governed" ? t.editGoverned : t.editCustom; }
+    function renderAssetExtension(locale) {
+      const a = assetUI[locale] || assetUI.en;
+      const cards = assetDomainPrompts.map((item, index) => `<article class="asset-card">
+        <div class="asset-card-head">
+          <div><h4>${escapeHTML(item.title[locale] || item.title.en)}</h4><p class="asset-use"><strong>${escapeHTML(a.use)}:</strong> ${escapeHTML(item.use[locale] || item.use.en)}</p></div>
+          <button class="copy-button secondary" type="button" data-copy-asset="${index}">${escapeHTML(a.copy)}</button>
+        </div>
+        <details class="asset-prompt-details">
+          <summary>${escapeHTML(a.view)}</summary>
+          <p class="panel-title">${escapeHTML(a.prompt)}</p>
+          <pre tabindex="0"><code>${escapeHTML(item.prompt)}</code></pre>
+        </details>
+        <div class="asset-copy-status" id="assetCopyStatus${index}" aria-live="polite"></div>
+      </article>`).join("");
+      return `<div class="asset-domain-extension">
+        <div class="asset-domain-head"><h3>${escapeHTML(a.title)}</h3><p>${escapeHTML(a.intro)}</p><p class="asset-domain-note">${escapeHTML(a.note)}</p></div>
+        <div class="asset-domain-list">${cards}</div>
+      </div>`;
+    }
 
     const productionPrompt = `# MSL Knowledge Copilot — Core Instructions
 
@@ -1498,6 +1737,7 @@ Keep organization_config, ta_knowledge, and runtime context as separate add-on m
 
       const blocks = sections.map((section, index) => {
         const cls = statusClass(section.status);
+        const assetExtension = section.id === "ta-module" ? renderAssetExtension(currentLocale) : "";
         return `<section id="${section.id}">
           <div class="section-head">
             <div><p class="section-kicker">${escapeHTML(t.sectionLabel)} ${index + 1}</p><h2>${escapeHTML(section.title[currentLocale])}</h2></div>
@@ -1514,7 +1754,7 @@ Keep organization_config, ta_knowledge, and runtime context as separate add-on m
               <p class="function-text">${escapeHTML(section.summary[currentLocale])}</p>
               <p class="edit-note ${cls}"><strong>${escapeHTML(statusText(t, section.status))}:</strong> ${escapeHTML(editText(t, section.status))}</p>
             </div>
-          </div>
+          </div>${assetExtension}
         </section>`;
       }).join("");
 
@@ -1561,13 +1801,26 @@ Keep organization_config, ta_knowledge, and runtime context as separate add-on m
           sectionButton.textContent = t.copiedSection;
           window.setTimeout(() => { sectionButton.textContent = t.copySection; copyStatus.textContent = ""; }, 1800);
         }
+        return;
+      }
+      const assetButton = event.target.closest("[data-copy-asset]");
+      if (assetButton) {
+        const a = assetUI[currentLocale] || assetUI.en;
+        const index = Number(assetButton.dataset.copyAsset);
+        const ok = await copyText(assetDomainPrompts[index].prompt);
+        const copyStatus = document.getElementById(`assetCopyStatus${index}`);
+        copyStatus.textContent = ok ? a.copied : ui[currentLocale].copyFailed;
+        if (ok) {
+          assetButton.textContent = a.copied;
+          window.setTimeout(() => { assetButton.textContent = a.copy; copyStatus.textContent = ""; }, 1800);
+        }
       }
     });
 
     select.addEventListener("change", () => render(select.value, true));
     let initial = "en";
     try { const saved = localStorage.getItem("msl-guide-language"); if (locales.includes(saved)) initial = saved; } catch (error) {}
-    window.__MSL_PROMPT_GUIDE__ = {locales, ui, sections, productionPrompt, fullPrompt};
+    window.__MSL_PROMPT_GUIDE__ = {locales, ui, sections, assetDomainPrompts, productionPrompt, fullPrompt};
     render(initial);
   })();
   </script>
