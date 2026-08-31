@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Structured feedback form for Medical AI Workflow tools.">
+  <title>Medical Excellence Feedback｜Medical AI Workflow</title>
+  <style>
+    :root{--ink:#17324d;--text:#405565;--muted:#6a7985;--paper:#f7f9fb;--white:#fff;--line:#dfe6eb;--blue:#315bb9;--blue-soft:#eef4ff;--teal:#147d78;--teal-soft:#e8f6f3;--red:#a43b3b;--red-soft:#fff0f0;--shadow:0 18px 50px rgba(23,50,77,.08);--radius:18px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(circle at 86% 2%,rgba(49,91,185,.09),transparent 26rem),var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}button,select,textarea,input{font:inherit}a:focus-visible,button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid rgba(49,91,185,.3);outline-offset:3px}.skip{position:fixed;left:1rem;top:-5rem;z-index:1200;padding:.65rem 1rem;color:#fff;background:var(--ink)}.skip:focus{top:1rem}
+    .brandbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:68px;padding:.7rem clamp(1rem,4vw,3rem);border-bottom:1px solid var(--line);background:#fff}.brand{display:flex;align-items:center;gap:.72rem;font-weight:820}.mark{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;color:#fff;background:linear-gradient(145deg,var(--blue),var(--teal));font-size:.72rem}.status{display:inline-flex;align-items:center;gap:.35rem;padding:.34rem .62rem;border:1px solid #ccebd7;border-radius:999px;color:#17693a;background:#edf9f1;font-size:.72rem;font-weight:850}.status::before{content:"";width:.45rem;height:.45rem;border-radius:50%;background:#2a9b56}
+    .suite-tabs{display:flex;gap:.35rem;align-items:center;overflow-x:auto;padding:.55rem clamp(1rem,4vw,3rem);border-bottom:1px solid var(--line);background:rgba(255,255,255,.97)}.suite-tabs a{flex:0 0 auto;padding:.5rem .8rem;border:1px solid transparent;border-radius:999px;color:#60717e;text-decoration:none;font-size:.82rem;font-weight:740;white-space:nowrap}.suite-tabs a:hover{border-color:var(--line);color:var(--ink);background:#f4f7f9}.suite-tabs a[aria-current="page"]{border-color:#bfd0f4;color:var(--blue);background:var(--blue-soft)}
+    main{max-width:1040px;margin:auto;padding:clamp(3rem,7vw,5.2rem) clamp(1.1rem,4vw,3rem) 6rem}.eyebrow{margin:0 0 .7rem;color:var(--blue);font-size:.74rem;font-weight:880;letter-spacing:.12em;text-transform:uppercase}.hero{max-width:850px}.hero h1{margin:0;font-size:clamp(2.25rem,5vw,4.4rem);line-height:1.03;letter-spacing:-.045em}.lead{max-width:760px;margin:1.2rem 0 0;color:var(--text);font-size:clamp(1rem,2vw,1.18rem)}.meta{display:flex;flex-wrap:wrap;gap:.55rem;margin:1.4rem 0 0;padding:0;list-style:none}.meta li{padding:.4rem .62rem;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:#fff;font-size:.76rem;font-weight:740}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.72fr);gap:1.2rem;margin-top:2.5rem;align-items:start}.panel{padding:clamp(1.25rem,3vw,2rem);border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow)}.panel h2{margin:0 0 .35rem;font-size:1.35rem}.panel-intro{margin:0 0 1.5rem;color:var(--muted);font-size:.9rem}
+    fieldset{min-width:0;margin:0 0 1.5rem;padding:0;border:0}legend,.field-label{display:block;margin:0 0 .55rem;color:var(--ink);font-weight:830}.required::after{content:" *";color:var(--red)}select,textarea{width:100%;border:1px solid #cbd5dc;border-radius:12px;color:var(--ink);background:#fff}select{min-height:48px;padding:.65rem .8rem}textarea{min-height:96px;padding:.75rem;resize:vertical}.hint{margin:.35rem 0 0;color:var(--muted);font-size:.78rem}.checks{display:grid;gap:.5rem}.choice{display:flex;align-items:flex-start;gap:.65rem;min-height:44px;padding:.65rem .75rem;border:1px solid var(--line);border-radius:12px;color:var(--text);background:#fbfcfd}.choice:hover{border-color:#bfd0f4;background:var(--blue-soft)}.choice input{width:1.05rem;height:1.05rem;margin:.22rem 0 0;accent-color:var(--blue)}
+    .score-grid{display:grid;grid-template-columns:repeat(10,minmax(40px,1fr));gap:.35rem}.score-option{position:relative}.score-option input{position:absolute;opacity:0;pointer-events:none}.score-option span{display:grid;place-items:center;min-height:46px;border:1px solid var(--line);border-radius:11px;color:var(--text);background:#fff;font-weight:820}.score-option input:checked+span{border-color:var(--blue);color:#fff;background:var(--blue)}.score-option input:focus-visible+span{outline:3px solid rgba(49,91,185,.3);outline-offset:2px}
+    .ratings{display:grid;gap:.85rem}.rating-card{padding:1rem;border:1px solid var(--line);border-radius:15px;background:#fbfcfd}.rating-card h3{margin:0 0 .7rem;font-size:1rem}.rating-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem}.rating-options .choice{font-size:.82rem}.rating-card textarea{min-height:74px;margin-top:.65rem;background:#fff}
+    .privacy{margin:1.25rem 0}.privacy .choice{border-color:#c8dedb;background:var(--teal-soft)}.actions{display:flex;flex-wrap:wrap;gap:.65rem}.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.68rem 1rem;border:1px solid var(--blue);border-radius:999px;color:#fff;background:var(--blue);font-weight:830;text-decoration:none;cursor:pointer}.button.secondary{border-color:var(--line);color:var(--ink);background:#fff}.button.teal{border-color:var(--teal);background:var(--teal)}.button[hidden]{display:none}.button:hover{filter:brightness(.98);transform:translateY(-1px)}
+    .errors{margin:0 0 1rem;padding:1rem;border:1px solid #efcaca;border-radius:12px;color:#7e2d2d;background:var(--red-soft)}.errors[hidden]{display:none}.errors strong{display:block}.errors ul{margin:.4rem 0 0;padding-left:1.2rem}.preview{position:sticky;top:1rem}.empty{padding:1.2rem;border:1px dashed #cbd5dc;border-radius:14px;color:var(--muted);background:#fbfcfd}.preview-output[hidden]{display:none}.preview dl{display:grid;grid-template-columns:auto 1fr;gap:.45rem .75rem;margin:1rem 0}.preview dt{color:var(--muted);font-size:.78rem;font-weight:780}.preview dd{margin:0;font-weight:760}.email-body{max-height:360px;overflow:auto;margin:1rem 0;padding:1rem;border:1px solid var(--line);border-radius:14px;white-space:pre-wrap;color:var(--text);background:#fbfcfd;font:500 .78rem/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}.privacy-note{margin:1rem 0 0;padding:.9rem;border-left:4px solid var(--teal);color:var(--text);background:var(--teal-soft);font-size:.8rem}.back{display:inline-flex;margin-top:1.5rem;color:var(--teal);font-weight:820;text-decoration:none}
+    footer{padding:1.5rem clamp(1rem,4vw,3rem);border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
+    @media(max-width:850px){.layout{grid-template-columns:1fr}.preview{position:static}.score-grid{grid-template-columns:repeat(5,1fr)}}
+    @media(max-width:560px){.brand span:last-child{display:none}.status{font-size:.67rem}.hero h1{font-size:2.45rem}.panel{padding:1.1rem}.rating-options{grid-template-columns:1fr}.actions{display:grid}.button{width:100%}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button{transition:none}}
+    @media print{.medai-language-shell,.medai-language-status,.brandbar,.suite-tabs,.actions,.back{display:none!important}body{background:#fff}.layout{grid-template-columns:1fr}.panel{box-shadow:none}.preview{position:static}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#feedback-form">Skip to feedback form</a>
+  <header class="brandbar">
+    <div class="brand"><span class="mark" aria-hidden="true">MA</span><span>Medical AI Workflow</span></div>
+    <span class="status" id="publish-status">Publish</span>
+  </header>
+  <nav class="suite-tabs" aria-label="Medical AI site navigation"><a href="index.html">Overview</a><a href="functions.html">Medical Functions</a></nav>
+  <main>
+    <section class="hero">
+      <p class="eyebrow" id="eyebrow">Medical Excellence learning loop</p>
+      <h1 id="page-title">Improve the tools with structured feedback.</h1>
+      <p class="lead" id="page-lead">Select the tools you used, score your experience, and rate where Medical Excellence has helped. The site prepares an email draft; you remain in control of sending it.</p>
+      <ul class="meta"><li id="meta-score">Score 1–10</li><li id="meta-rating">4-level improvement rating</li><li id="meta-storage">No website storage</li></ul>
+    </section>
+
+    <div class="layout">
+      <form class="panel" id="feedback-form" novalidate>
+        <h2 id="form-title">Your feedback</h2>
+        <p class="panel-intro" id="form-intro">Required fields are marked with an asterisk.</p>
+        <div class="errors" id="errors" role="alert" tabindex="-1" hidden></div>
+
+        <label class="field-label required" for="function-select" id="function-label">Medical Function</label>
+        <select id="function-select" name="function" required>
+          <option value="msl">MSL</option>
+          <option value="medical-content">Medical Content</option>
+        </select>
+
+        <fieldset>
+          <legend class="required" id="tools-legend">Tools used</legend>
+          <div class="checks" id="tool-options"></div>
+          <p class="hint" id="tools-hint">Choose every tool you want to comment on.</p>
+        </fieldset>
+
+        <fieldset>
+          <legend class="required" id="score-legend">Overall score</legend>
+          <div class="score-grid" id="score-options"></div>
+          <p class="hint" id="score-hint">1 = needs major improvement · 10 = highly useful</p>
+        </fieldset>
+
+        <fieldset>
+          <legend class="required" id="ratings-legend">Medical Excellence improvement rating</legend>
+          <div class="ratings" id="ratings">
+            <p class="empty" id="ratings-empty">Select at least one tool to add its improvement rating.</p>
+          </div>
+        </fieldset>
+
+        <label class="field-label" for="general-comments" id="comments-label">Additional feedback</label>
+        <textarea id="general-comments" maxlength="1800" placeholder="What should Medical Excellence retain, improve or simplify?"></textarea>
+        <p class="hint" id="comments-hint">Optional · up to 1,800 characters</p>
+
+        <div class="privacy">
+          <label class="choice"><input type="checkbox" id="privacy-confirm" required><span id="privacy-label">I confirm this feedback contains no patient or HCP identifiable information.</span></label>
+        </div>
+
+        <div class="actions">
+          <button class="button" type="submit" id="preview-button">Preview email</button>
+          <button class="button secondary" type="reset" id="reset-button">Reset</button>
+        </div>
+      </form>
+
+      <aside class="panel preview" aria-labelledby="preview-title">
+        <h2 id="preview-title">Email preview</h2>
+        <p class="panel-intro" id="preview-intro">Nothing is sent automatically. Review the draft before opening your email application.</p>
+        <div class="empty" id="preview-empty">Complete the form to generate a structured draft.</div>
+        <div class="preview-output" id="preview-output" hidden>
+          <dl><dt id="to-label">To</dt><dd id="email-target">Medical Excellence</dd><dt id="subject-label">Subject</dt><dd id="subject-value"></dd></dl>
+          <pre class="email-body" id="email-body"></pre>
+          <div class="actions">
+            <a class="button teal" id="open-email" href="#">Open email draft</a>
+            <button class="button secondary" type="button" id="copy-feedback">Copy feedback</button>
+          </div>
+        </div>
+        <p class="privacy-note" id="delivery-note">This site does not store or submit your responses. Opening the draft transfers the prepared text to your email application; you decide whether to send it.</p>
+        <a class="back" id="back-link" href="functions.html#msl">← Back to Medical Function</a>
+      </aside>
+    </div>
+  </main>
+  <footer id="footer">Medical AI Workflow · Medical Excellence Feedback</footer>
+
+  <script>
+  (function(){
+    "use strict";
+    var copy={
+      en:{
+        eyebrow:"Medical Excellence learning loop",title:"Improve the tools with structured feedback.",lead:"Select the tools you used, score your experience, and rate where Medical Excellence has helped. The site prepares an email draft; you remain in control of sending it.",scoreMeta:"Score 1–10",ratingMeta:"4-level improvement rating",storageMeta:"No website storage",formTitle:"Your feedback",formIntro:"Required fields are marked with an asterisk.",functionLabel:"Medical Function",toolsLegend:"Tools used",toolsHint:"Choose every tool you want to comment on.",scoreLegend:"Overall score",scoreHint:"1 = needs major improvement · 10 = highly useful",ratingsLegend:"Medical Excellence improvement rating",ratingsEmpty:"Select at least one tool to add its improvement rating.",commentsLabel:"Additional feedback",commentsPlaceholder:"What should Medical Excellence retain, improve or simplify?",commentsHint:"Optional · up to 1,800 characters",privacy:"I confirm this feedback contains no patient or HCP identifiable information.",previewButton:"Preview email",resetButton:"Reset",previewTitle:"Email preview",previewIntro:"Nothing is sent automatically. Review the draft before opening your email application.",previewEmpty:"Complete the form to generate a structured draft.",to:"To",subject:"Subject",openEmail:"Open email draft",copyFeedback:"Copy feedback",copied:"Copied",delivery:"This site does not store or submit your responses. Opening the draft transfers the prepared text to your email application; you decide whether to send it.",back:"← Back to Medical Function",publish:"Publish",required:"Please complete the required fields:",errorTools:"Select at least one tool.",errorScore:"Choose an overall score from 1 to 10.",errorRatings:"Choose an improvement rating for every selected tool.",errorPrivacy:"Confirm that the feedback contains no patient or HCP identifiable information.",comment:"Optional comment for this tool",ratings:["Improved a lot","Slightly improved","Neutral","Disagree"],emailTitle:"Medical AI Workflow Feedback",emailFunction:"Function",emailScore:"Overall score",emailTools:"Tool feedback",emailImprovement:"Improvement rating",emailComment:"Comment",emailGeneral:"Additional feedback",emailNone:"None provided",emailDate:"Prepared date",emailPrivacy:"Privacy confirmation: no patient or HCP identifiable information included.",emailSubject:"Medical AI Feedback",tools:{msl:["MSL Knowledge Copilot","mVOC Writing Assistant","Reference Text Extractor"],"medical-content":["Medical Claims Pre-Review","Reference Text Extractor"]}},
+      "zh-Hant":{
+        eyebrow:"Medical Excellence 學習迴圈",title:"以結構化回饋，持續改善工具。",lead:"勾選使用過的工具、評分使用體驗，並判斷 Medical Excellence 帶來的改善程度。網站只會準備郵件草稿，是否寄送仍由你決定。",scoreMeta:"1–10 分",ratingMeta:"四階改善評價",storageMeta:"網站不儲存資料",formTitle:"你的回饋",formIntro:"星號為必填欄位。",functionLabel:"醫學職能",toolsLegend:"使用過的工具",toolsHint:"請勾選所有想提供回饋的工具。",scoreLegend:"整體評分",scoreHint:"1 = 需要大幅改善 · 10 = 非常實用",ratingsLegend:"Medical Excellence 改善程度",ratingsEmpty:"先選擇至少一項工具，才能逐項評價。",commentsLabel:"其他建議",commentsPlaceholder:"Medical Excellence 應保留、改善或簡化什麼？",commentsHint:"選填 · 最多 1,800 字",privacy:"我確認本回饋不含病患或 HCP 可識別資訊。",previewButton:"預覽郵件",resetButton:"重新填寫",previewTitle:"郵件預覽",previewIntro:"網站不會自動寄送。請先檢查草稿，再開啟郵件程式。",previewEmpty:"完成表單後，這裡會產生結構化草稿。",to:"收件者",subject:"主旨",openEmail:"開啟郵件草稿",copyFeedback:"複製回饋",copied:"已複製",delivery:"本網站不會儲存或提交你的回覆。開啟草稿後，內容會交給你的郵件程式；是否寄送由你決定。",back:"← 返回醫學職能",publish:"Publish",required:"請完成下列必填項目：",errorTools:"至少選擇一項工具。",errorScore:"請選擇 1–10 的整體評分。",errorRatings:"每一項已選工具都需要改善程度評價。",errorPrivacy:"請確認回饋不含病患或 HCP 可識別資訊。",comment:"此工具的補充建議（選填）",ratings:["改善很多","略有改善","中立","不同意"],emailTitle:"Medical AI Workflow 回饋",emailFunction:"職能",emailScore:"整體評分",emailTools:"工具回饋",emailImprovement:"改善程度",emailComment:"建議",emailGeneral:"其他建議",emailNone:"未提供",emailDate:"準備日期",emailPrivacy:"隱私確認：未包含病患或 HCP 可識別資訊。",emailSubject:"Medical AI 回饋",tools:{msl:["MSL Knowledge Copilot","mVOC Writing Assistant","Reference Text Extractor"],"medical-content":["Medical Claims Pre-Review","Reference Text Extractor"]}}
+    };
+    var locale="en";
+    var selectedFunction=new URLSearchParams(window.location.search).get("function");
+    if(selectedFunction!=="medical-content"){selectedFunction="msl";}
+    var form=document.getElementById("feedback-form");
+    var functionSelect=document.getElementById("function-select");
+    var toolOptions=document.getElementById("tool-options");
+    var ratings=document.getElementById("ratings");
+    var errors=document.getElementById("errors");
+    var previewEmpty=document.getElementById("preview-empty");
+    var previewOutput=document.getElementById("preview-output");
+    var emailBody=document.getElementById("email-body");
+    var openEmail=document.getElementById("open-email");
+    var copyButton=document.getElementById("copy-feedback");
+    var receiver=["willy.w.wen","gsk.com"].join("@");
+    var currentBody="";
+    var ids={eyebrow:"eyebrow",title:"page-title",lead:"page-lead",scoreMeta:"meta-score",ratingMeta:"meta-rating",storageMeta:"meta-storage",formTitle:"form-title",formIntro:"form-intro",functionLabel:"function-label",toolsLegend:"tools-legend",toolsHint:"tools-hint",scoreLegend:"score-legend",scoreHint:"score-hint",ratingsLegend:"ratings-legend",ratingsEmpty:"ratings-empty",commentsLabel:"comments-label",commentsHint:"comments-hint",privacy:"privacy-label",previewButton:"preview-button",resetButton:"reset-button",previewTitle:"preview-title",previewIntro:"preview-intro",previewEmpty:"preview-empty",to:"to-label",subject:"subject-label",openEmail:"open-email",copyFeedback:"copy-feedback",delivery:"delivery-note",back:"back-link",publish:"publish-status"};
+
+    function esc(value){var div=document.createElement("div");div.textContent=String(value);return div.innerHTML;}
+    function t(){return copy[locale]||copy.en;}
+    function renderScores(){
+      var html="";
+      for(var i=1;i<=10;i++){html+='<label class="score-option"><input type="radio" name="score" value="'+i+'"><span>'+i+"</span></label>";}
+      document.getElementById("score-options").innerHTML=html;
+    }
+    function renderTools(preserve){
+      selectedFunction=functionSelect.value;
+      var tools=t().tools[selectedFunction];
+      toolOptions.innerHTML=tools.map(function(name,index){
+        var checked=preserve&&preserve.indexOf(name)>-1?" checked":"";
+        return '<label class="choice"><input type="checkbox" name="tool" value="'+esc(name)+'"'+checked+'><span>'+esc(name)+"</span></label>";
+      }).join("");
+      toolOptions.querySelectorAll('input[name="tool"]').forEach(function(input){input.addEventListener("change",renderRatings);});
+      document.getElementById("back-link").href="functions.html#"+selectedFunction;
+      renderRatings();
+    }
+    function renderRatings(){
+      var selected=Array.from(form.querySelectorAll('input[name="tool"]:checked')).map(function(input){return input.value;});
+      var old={};
+      ratings.querySelectorAll(".rating-card").forEach(function(card){
+        var key=card.dataset.tool;
+        var checked=card.querySelector('input[type="radio"]:checked');
+        var note=card.querySelector("textarea");
+        old[key]={rating:checked?checked.value:"",note:note?note.value:""};
+      });
+      if(!selected.length){ratings.innerHTML='<p class="empty" id="ratings-empty">'+esc(t().ratingsEmpty)+"</p>";return;}
+      ratings.innerHTML=selected.map(function(tool,index){
+        var prior=old[tool]||{};
+        var options=t().ratings.map(function(label,ratingIndex){
+          var value=copy.en.ratings[ratingIndex];
+          var checked=prior.rating===value?" checked":"";
+          return '<label class="choice"><input type="radio" name="rating-'+index+'" value="'+esc(value)+'"'+checked+'><span>'+esc(label)+"</span></label>";
+        }).join("");
+        return '<section class="rating-card" data-tool="'+esc(tool)+'"><h3>'+esc(tool)+'</h3><div class="rating-options">'+options+'</div><textarea maxlength="800" aria-label="'+esc(t().comment+": "+tool)+'" placeholder="'+esc(t().comment)+'">'+esc(prior.note||"")+"</textarea></section>";
+      }).join("");
+    }
+    function applyLanguage(next){
+      var savedTools=Array.from(form.querySelectorAll('input[name="tool"]:checked')).map(function(input){return input.value;});
+      var score=form.querySelector('input[name="score"]:checked');
+      var scoreValue=score?score.value:"";
+      var comments=document.getElementById("general-comments").value;
+      var privacy=document.getElementById("privacy-confirm").checked;
+      locale=next==="zh-Hant"?"zh-Hant":"en";
+      document.documentElement.lang=locale;
+      Object.keys(ids).forEach(function(key){var node=document.getElementById(ids[key]);if(node&&t()[key])node.textContent=t()[key];});
+      document.getElementById("general-comments").placeholder=t().commentsPlaceholder;
+      functionSelect.value=selectedFunction;
+      renderTools(savedTools);
+      if(scoreValue){var scoreInput=form.querySelector('input[name="score"][value="'+scoreValue+'"]');if(scoreInput)scoreInput.checked=true;}
+      document.getElementById("general-comments").value=comments;
+      document.getElementById("privacy-confirm").checked=privacy;
+      document.title=(locale==="zh-Hant"?"Medical Excellence 回饋":"Medical Excellence Feedback")+"｜Medical AI Workflow";
+    }
+    function collect(){
+      var selected=Array.from(form.querySelectorAll('input[name="tool"]:checked')).map(function(input){return input.value;});
+      var score=form.querySelector('input[name="score"]:checked');
+      var itemRatings=[];
+      var missingRating=false;
+      ratings.querySelectorAll(".rating-card").forEach(function(card){
+        var rating=card.querySelector('input[type="radio"]:checked');
+        if(!rating)missingRating=true;
+        itemRatings.push({tool:card.dataset.tool,rating:rating?rating.value:"",note:card.querySelector("textarea").value.trim()});
+      });
+      return {tools:selected,score:score?score.value:"",ratings:itemRatings,missingRating:missingRating,comments:document.getElementById("general-comments").value.trim(),privacy:document.getElementById("privacy-confirm").checked};
+    }
+    function validate(state){
+      var list=[];
+      if(!state.tools.length)list.push(t().errorTools);
+      if(!state.score)list.push(t().errorScore);
+      if(state.tools.length&&state.missingRating)list.push(t().errorRatings);
+      if(!state.privacy)list.push(t().errorPrivacy);
+      if(list.length){errors.innerHTML="<strong>"+esc(t().required)+"</strong><ul>"+list.map(function(item){return "<li>"+esc(item)+"</li>";}).join("")+"</ul>";errors.hidden=false;errors.focus();return false;}
+      errors.hidden=true;errors.innerHTML="";return true;
+    }
+    function functionName(){return selectedFunction==="medical-content"?"Medical Content":"MSL";}
+    function prepareEmail(state){
+      var c=t();
+      var lines=[c.emailTitle,"",c.emailFunction+": "+functionName(),c.emailScore+": "+state.score+"/10","",c.emailTools+":"];
+      state.ratings.forEach(function(item){
+        var ratingIndex=copy.en.ratings.indexOf(item.rating);
+        var displayRating=ratingIndex>-1?c.ratings[ratingIndex]:item.rating;
+        lines.push("- "+item.tool);
+        lines.push("  "+c.emailImprovement+": "+displayRating);
+        lines.push("  "+c.emailComment+": "+(item.note||c.emailNone));
+      });
+      lines.push("");
+      lines.push(c.emailGeneral+": "+(state.comments||c.emailNone));
+      lines.push(c.emailDate+": "+new Date().toISOString().slice(0,10));
+      lines.push(c.emailPrivacy);
+      currentBody=lines.join("\n");
+      var subject="["+c.emailSubject+"] "+functionName()+" · "+state.score+"/10";
+      document.getElementById("subject-value").textContent=subject;
+      document.getElementById("email-target").textContent=receiver;
+      emailBody.textContent=currentBody;
+      openEmail.href="mailto:"+receiver+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(currentBody);
+      previewEmpty.hidden=true;
+      previewOutput.hidden=false;
+      previewOutput.scrollIntoView({behavior:"smooth",block:"nearest"});
+    }
+    function resetPreview(){
+      errors.hidden=true;errors.innerHTML="";previewOutput.hidden=true;previewEmpty.hidden=false;currentBody="";copyButton.textContent=t().copyFeedback;
+    }
+
+    renderScores();
+    functionSelect.value=selectedFunction;
+    renderTools([]);
+    functionSelect.addEventListener("change",function(){selectedFunction=functionSelect.value;renderTools([]);resetPreview();});
+    form.addEventListener("submit",function(event){event.preventDefault();var state=collect();if(validate(state))prepareEmail(state);});
+    form.addEventListener("reset",function(){window.setTimeout(function(){selectedFunction=functionSelect.value;renderTools([]);resetPreview();},0);});
+    copyButton.addEventListener("click",function(){if(!currentBody)return;navigator.clipboard.writeText(currentBody).then(function(){copyButton.textContent=t().copied;window.setTimeout(function(){copyButton.textContent=t().copyFeedback;},1600);});});
+    document.addEventListener("medai-language-change",function(event){applyLanguage(event.detail&&event.detail.contentLocale||"en");});
+    try{applyLanguage(localStorage.getItem("medai-language")==="zh-Hant"?"zh-Hant":"en");}catch(_){applyLanguage("en");}
+  })();
+  </script>
+  <script src="medai-language-shell.js" data-supported="en,zh-Hant" data-fallback="en" data-canonical="en"></script>
+  <script src="medai-navigation.js" data-function="medical-excellence"></script>
+</body>
+</html>

@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="How Medical Excellence makes AI-enabled work consistent, measurable and continuously better across Medical Affairs.">
+  <meta property="og:title" content="Medical AI Workflow">
+  <meta property="og:description" content="From insight to measurable medical impact">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Medical AI Workflow">
+  <meta name="twitter:description" content="From insight to measurable medical impact">
+  <meta name="twitter:image" content="/og.png">
   <title>AI × Medical Excellence | Operating model</title>
   <style>
     :root{--ink:#101828;--navy:#17324d;--muted:#5d6b78;--paper:#fbfcfd;--white:#fff;--line:#e2e8ec;--blue:#315bb9;--blue-soft:#eef4ff;--teal:#147d78;--teal-soft:#e8f6f3;--shadow:0 18px 50px rgba(23,50,77,.09);--radius:20px;--reading:800px}
@@ -34,6 +42,7 @@
     <a href="ta-medical-impact-okr-workflow.html"><span id="portal-ta">TA Impact &amp; OKR</span></a>
     <a href="management-monitoring-workflow.html"><span id="portal-mm">Management Monitoring</span></a>
     <a href="Copilot_Agent_MSL_Knowledge_Copilot_Prompt_Guide.html"><span id="portal-knowledge">MSL Knowledge</span></a>
+    <a href="medical-claims-pre-review-prompt-guide.html">Claims Pre-Review</a>
     <a href="Copilot_Agent_MSL_mVOC_Writing_Assistant.html"><span id="portal-mvoc">mVOC Writing</span></a>
     <a href="reference-text-extractor/reference_text_extractor_prompt_guide_global.html"><span id="portal-reference">Reference Extractor</span></a>
   </nav>
@@ -91,5 +100,6 @@
     let initial='en';try{const saved=localStorage.getItem('medai-language')||localStorage.getItem('me-excellence-language');if(copy[saved])initial=saved}catch(_){}language.addEventListener('change',()=>render(language.value));render(initial,false);
   })();
   </script>
+  <script src="medai-navigation.js" data-function="overview"></script>
 </body>
 </html>
