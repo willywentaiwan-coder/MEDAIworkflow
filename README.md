@@ -4,12 +4,12 @@ This repository publishes one Medical Excellence landing page with a function-ba
 
 ## Information architecture
 
-The global navigation has only two permanent destinations: `Overview` and `By function`. Agent pages add one contextual link back to their current function. New Agents must be placed inside a function rather than added as another global tab.
+The global navigation has only two permanent destinations: `Overview` and `Medical Functions`. Agent pages add one contextual link back to their current function. New Agents must be placed inside a function rather than added as another global tab.
 
 | Level | File | Purpose |
 |---|---|---|
 | Overview | index.html | Main landing page and shared Medical Excellence operating model |
-| By function | functions.html | Directory for MSL, TA Lead, Medical Content, Patient Affairs, Medical Excellence, and Medical Governance |
+| Medical Functions | functions.html | Directory for MSL, TA Lead, Medical Content, Patient Affairs, Medical Excellence, and Medical Governance |
 
 ### Agent and workflow pages
 
@@ -24,7 +24,7 @@ The global navigation has only two permanent destinations: `Overview` and `By fu
 | MSL | Copilot_Agent_MSL_mVOC_Writing_Assistant.html | MSL mVOC Writing Assistant design guide |
 | MSL / Medical Content | reference-text-extractor/reference_text_extractor_prompt_guide_global.html | Reference Text Extractor guide |
 
-index.html is the canonical portal entry. functions.html is the scalable directory. The other HTML files are maintained as Agent or workflow pages, not competing homepages. Shared navigation is rendered by medai-navigation.js and preserves the path `Overview → By function → Current function`.
+index.html is the canonical portal entry. functions.html is the scalable directory. The other HTML files are maintained as Agent or workflow pages, not competing homepages. Shared navigation is rendered by medai-navigation.js and preserves the path `Overview → Medical Functions → Current function`.
 
 ## Publishing record
 
@@ -51,7 +51,7 @@ Open index.html in a modern browser. The portal navigation uses relative links, 
 
 Before publishing, verify:
 
-- the Overview and By function links resolve from every page;
+- the Overview and Medical Functions links resolve from every page;
 - functions.html lists every Agent and workflow under at least one accountable function;
 - shared tools are visibly identified and do not become global tabs;
 - index.html remains the GitHub Pages entry;
